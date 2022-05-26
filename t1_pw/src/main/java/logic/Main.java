@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import io.javalin.Javalin;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -15,10 +16,11 @@ public class Main {
         String url = scanner.next();
         scanner.close();*/
 
-
         Document doc = Jsoup.connect("https://www.maltamorena.com.do/registro-usuario").get();
 
-
+        /*
+        Item A: Indicar la cantidad de lineas del recurso retornado
+         */
         Elements lines = doc.getAllElements();
         int cantLines = 0;
         for(Element line : lines)
@@ -28,7 +30,9 @@ public class Main {
         }
         System.out.println("Cantidad de lineas que hay en el HTML: "+cantLines);
 
-
+        /*
+        Item B:
+         */
         Elements p = doc.getElementsByTag("p");
         int cantP = 0; // Cantidad de <p> en el HTML
         for(Element q : p) {
@@ -72,7 +76,6 @@ public class Main {
             }
 
         }
-
 
         System.out.println("Cantidad de form con el método 'GET' que hay en el HTML: "+cantGet);
         System.out.println("Cantidad de form con el método 'POST' que hay en el HTML: "+cantPost);
