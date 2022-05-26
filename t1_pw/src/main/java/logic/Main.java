@@ -5,15 +5,29 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import java.io.InputStream;
 import java.util.Scanner;
-
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        /*Scanner input = new Scanner(System.in);
-        String url = input.nextLine();*/
+        /*InputStream stream = System.in;
+        Scanner scanner = new Scanner(stream);
+        String url = scanner.next();
+        scanner.close();*/
 
-        Document doc = Jsoup.connect("https://tecnotuto.com/internet/como-agregar-y-editar-imagenes-en-formularios-de-google/").get();
+
+        Document doc = Jsoup.connect("https://www.maltamorena.com.do/registro-usuario").get();
+
+
+        Elements lines = doc.getAllElements();
+        int cantLines = 0;
+        for(Element line : lines)
+        {
+            cantLines++;
+            line.getAllElements().next();
+        }
+        System.out.println("Cantidad de lineas que hay en el HTML: "+cantLines);
+
 
         Elements p = doc.getElementsByTag("p");
         int cantP = 0; // Cantidad de <p> en el HTML
@@ -37,17 +51,29 @@ public class Main {
             switch(frm.attr("method"))
             {
                 case "post":
-                    cantPost+=1;
+                    cantPost++;
                     break;
-                case "get":
-                    cantGet+=1;
+                default:
+                    cantGet++;
                     break;
             }
-
             cantForm+=1;
             frm.getAllElements().next();
 
         }
+        System.out.println("\n\nInputs");
+        for (Element frm: form){
+            var input = frm.getElementsByTag("input");
+            for(Element f: input)
+            {
+                System.out.println(f);
+                String inputype = input.attr("type");
+                System.out.println("Tipo: " + inputype + "\n");
+            }
+
+        }
+
+
         System.out.println("Cantidad de form con el método 'GET' que hay en el HTML: "+cantGet);
         System.out.println("Cantidad de form con el método 'POST' que hay en el HTML: "+cantPost);
         System.out.println("Cantidad de form que hay en el HTML: "+cantForm);
