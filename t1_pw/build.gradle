@@ -10,11 +10,14 @@ repositories {
     mavenCentral()
 }
 
+run {
+    standardInput = System.in
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
-    implementation group: 'io.javalin', name: 'javalin', version: '4.6.0'
 }
 
 application{
