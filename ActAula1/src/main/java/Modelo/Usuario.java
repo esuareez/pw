@@ -9,9 +9,10 @@ public class Usuario {
 
     }
 
-    public Usuario(String usuario, String password)
+    public Usuario(String usuario,String nombre,String password)
     {
         this.usuario = usuario;
+        this.nombre = nombre;
         this.password = password;
     }
 
