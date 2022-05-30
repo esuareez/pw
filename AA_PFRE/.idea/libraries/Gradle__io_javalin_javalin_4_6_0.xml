@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.javalin:javalin:4.6.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.javalin/javalin/4.6.0/b0b0dc46e722f1b40559642df0a87c6ee5829b04/javalin-4.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.javalin/javalin/4.6.0/c8dd7dd73836b8626f08d3228659f65e2da0137e/javalin-4.6.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
