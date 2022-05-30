@@ -28,17 +28,9 @@ public class UsuarioController {
                 ctx.redirect("/formulario.html");
                 return;
             }
+
         });
 
-        app.get("/",ctx -> {
-            if(ctx.sessionAttribute("usuario") == null){
-                ctx.redirect("formulario.html");
-                return;
-            }
-            Map<String,Object> modelo = new HashMap<>();
-            modelo.put("usuario",user);
-            ctx.render("/templates/inicio.html",modelo);
-        });
 
         app.post("/login", ctx -> {
            String usuario = ctx.formParam("usuario");
@@ -51,20 +43,17 @@ public class UsuarioController {
             if(usuario.equals(user.getUsuario()) && password.equals(user.getPassword()))
             {
                 ctx.sessionAttribute("usuario",usuario);
-                Map<String,Object> modelo = new HashMap<>();
-                modelo.put("usuario",user);
-                ctx.render("/templates/inicio.html",modelo);
+                ctx.redirect("/inicio");
+
             }
         });
 
         app.get("/inicio", ctx -> {
-            if(ctx.sessionAttribute("usuario") == null){
-                ctx.redirect("formulario.html");
-                return;
-            }
-            Map<String,Object> modelo = new HashMap<>();
-            modelo.put("usuario",user);
-            ctx.render("/templates/inicio.html",modelo);
+
+                Map<String,Object> modelo = new HashMap<>();
+                modelo.put("usuario",user);
+                ctx.render("/templates/inicio.html",modelo);
+
             //ctx.redirect("/inicio.html");
         });
     }
