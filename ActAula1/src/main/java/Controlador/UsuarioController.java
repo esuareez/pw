@@ -1,6 +1,5 @@
 package Controlador;
 
-import Servicios.fakeServices;
 import io.javalin.Javalin;
 
 
@@ -31,6 +30,7 @@ public class UsuarioController {
                ctx.redirect("/formulario.html");
                return;
            }
+
            ctx.cookie("usuario",usuario,180);
            ctx.redirect("/inicio");
            return;
@@ -41,7 +41,7 @@ public class UsuarioController {
                 ctx.redirect("formulario.html");
                 return;
             }
-            ctx.result("Bienvenido de vuelta: "+ctx.cookie("usuario"));
+            ctx.redirect("/inicio.html");
         });
     }
 

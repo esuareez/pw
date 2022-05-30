@@ -2,17 +2,15 @@ package Modelo;
 
 public class Usuario {
     String usuario;
-    String nombre;
     String password;
 
     public Usuario(){
 
     }
 
-    public Usuario(String usuario,String nombre,String password)
+    public Usuario(String usuario,String password)
     {
         this.usuario = usuario;
-        this.nombre = nombre;
         this.password = password;
     }
 
@@ -24,13 +22,6 @@ public class Usuario {
         this.usuario = usuario;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public String getPassword() {
         return password;
