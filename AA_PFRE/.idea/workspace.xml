@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9400ce85-143f-4f21-ae8f-6ca9cbe94841" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/UsuarioController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Logic/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Modelo/Usuario.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Servicios/fakeServicios.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/archv/formulario.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../t1_pw/src/main/java/logic/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../t1_pw/src/main/java/logic/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="9400ce85-143f-4f21-ae8f-6ca9cbe94841" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -151,6 +137,7 @@
       <updated>1653866259152</updated>
       <workItem from="1653866260486" duration="1501000" />
       <workItem from="1653873475666" duration="1783000" />
+      <workItem from="1653875533389" duration="168000" />
     </task>
     <servers />
   </component>
