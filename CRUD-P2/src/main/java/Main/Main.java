@@ -1,5 +1,6 @@
 package Main;
 
+import Servicios.PedidoServ;
 import Servicios.ProductoServ;
 import Modelos.Producto;
 import io.javalin.Javalin;
@@ -9,7 +10,7 @@ import io.javalin.http.staticfiles.Location;
 public class Main {
     public static void main(String[] args) {
 
-        Javalin app = Javalin.create(config ->{
+        /*Javalin app = Javalin.create(config ->{
             config.addStaticFiles(staticFileConfig -> {
                 staticFileConfig.hostedPath = "/";
                 staticFileConfig.directory = "/publico";
@@ -19,7 +20,7 @@ public class Main {
             config.enableCorsForAllOrigins();
 
         });
-        app.start(1000);
+        app.start(8080);*/
 
         System.out.println("Productos registrados.");
         for(var item :ProductoServ.getInstance().getProductoList())
@@ -39,6 +40,15 @@ public class Main {
         {
             if(item.getEstado()>0)
                 System.out.println(item.getNombre()+" "+item.getPrecio()+" "+item.getEstado()+" "+item.getDescripcion());
+        }
+        System.out.println("\nProductos en el pedido");
+        for(var item: PedidoServ.getInstance().getPedidoList()){
+            System.out.println(item.getId());
+            for(var product : item.getProductoPedido())
+            {
+                System.out.println("Producto: "+product.getProducto().getNombre()+" Cantidad en el pedido:"+product.getCantidad());
+            }
+            System.out.println(item.getFecha()+"\n"+item.getNombre());
         }
     }
 }
