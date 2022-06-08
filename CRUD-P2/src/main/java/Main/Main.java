@@ -10,17 +10,16 @@ import io.javalin.http.staticfiles.Location;
 public class Main {
     public static void main(String[] args) {
 
-        /*Javalin app = Javalin.create(config ->{
+        Javalin app = Javalin.create(config ->{
             config.addStaticFiles(staticFileConfig -> {
                 staticFileConfig.hostedPath = "/";
                 staticFileConfig.directory = "/publico";
                 staticFileConfig.location = Location.CLASSPATH;
             });
             //config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
-            config.enableCorsForAllOrigins();
-
+            //config.enableCorsForAllOrigins();
         });
-        app.start(8080);*/
+        app.start(8080);
 
         System.out.println("Productos registrados.");
         for(var item :ProductoServ.getInstance().getProductoList())
@@ -46,7 +45,8 @@ public class Main {
             System.out.println(item.getId());
             for(var product : item.getProductoPedido())
             {
-                System.out.println("Producto: "+product.getProducto().getNombre()+" Cantidad en el pedido:"+product.getCantidad());
+                System.out.println("Producto: "+product.getProducto().getNombre()+" Cantidad en el pedido:"+
+                        product.getCantidad()+" Id del pedido:"+product.getPedido().getId());
             }
             System.out.println(item.getFecha()+"\n"+item.getNombre());
         }

@@ -22,15 +22,13 @@ public class PedidoServ {
         }
         return instancia;
     }
-    ProductoPedido pp = new ProductoPedido(1, ProductoServ.getInstance().getProductoporID(1),5 );
-    ProductoPedido pp1 = new ProductoPedido(1, ProductoServ.getInstance().getProductoporID(2),2 );
-
-
+    Pedido pedido = new Pedido(1,productoPedidoList,"Eliam Pimentel");
+    ProductoPedido pp = new ProductoPedido(1,pedido, ProductoServ.getInstance().getProductoporID(1),5 );
+    ProductoPedido pp1 = new ProductoPedido(1,pedido, ProductoServ.getInstance().getProductoporID(2),2 );
 
     public PedidoServ() {
         productoPedidoList.add(pp);
         productoPedidoList.add(pp1);
-        Pedido pedido = new Pedido(1,productoPedidoList,"Eliam Pimentel");
         pedidoList.add(pedido);
 
     }
