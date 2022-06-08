@@ -10,12 +10,12 @@ public class ProductoServ {
 
     private List<Producto> productoList = new ArrayList<>();
 
-    private Producto product = new Producto(1,"Peptobismol",250,"Sirve para el dolor de estómago.");
-    private Producto product1 = new Producto(2,"Winasorb",25,"Dolor de cabeza.");
+    private Producto product = new Producto("Peptobismol",250,"Sirve para el dolor de estómago.");
+    private Producto product1 = new Producto("Winasorb",25,"Dolor de cabeza.");
 
     public ProductoServ(){
-        productoList.add(product);
-        productoList.add(product1);
+        crearProducto(product);
+        crearProducto(product1);
     }
 
     public static ProductoServ getInstance(){

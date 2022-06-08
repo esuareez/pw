@@ -6,6 +6,10 @@ import Modelos.Producto;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -19,7 +23,14 @@ public class Main {
             //config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
             //config.enableCorsForAllOrigins();
         });
-        app.start(8080);
+        app.start(8000);
+
+        app.get("/",ctx -> {
+            List<Producto> productoList = ProductoServ.getInstance().getProductoList();
+            Map<String,Object> modelo = new HashMap<>();
+            modelo.put("productos",productoList);
+            ctx.render("publico/index.html",modelo);
+        });
 
         System.out.println("Productos registrados.");
         for(var item :ProductoServ.getInstance().getProductoList())

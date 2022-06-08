@@ -1,5 +1,7 @@
 package Modelos;
 
+import Servicios.PedidoServ;
+
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Pedido {
     }
 
     public Pedido(List<ProductoPedido> productoPedido, String nombre) {
+        //this.id = PedidoServ.getInstance().makeId();
         this.productoPedido = productoPedido;
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
