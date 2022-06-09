@@ -37,7 +37,7 @@
                 <ul class="menu">
                     <li class="sidebar-title">Menu</li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item ">
                         <a th:href="@{/}" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Inicio</span>
@@ -52,13 +52,13 @@
                     </li>
 
                     <li class="sidebar-title">Administrador</li>
-                    <li class="sidebar-item  has-sub">
+                    <li class="sidebar-item  has-sub active">
                         <a href="#" class='sidebar-link'>
                             <i class="bi bi-box-seam"></i>
                             <span>Producto</span>
                         </a>
                         <ul class="submenu ">
-                            <li class="submenu-item ">
+                            <li class="submenu-item active">
                                 <a th:href="@{/inventario}">Productos</a>
                             </li>
                             <li class="submenu-item">
@@ -93,13 +93,14 @@
         </header>
 
         <div class="page-heading">
-            <h3>Mini tienda</h3>
+            <h3>Inventario de la Mini tienda</h3>
+            <p><small><i>Productos registrados con y sin stock.</i></small></p>
         </div>
         <div class="page-content">
             <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        Productos disponibles
+                        Productos en inventario
                     </div>
                     <div class="card-body">
                         <table class="table table-striped" id="table1">
@@ -115,14 +116,15 @@
                             <tbody>
 
                             <tr th:each="item : ${productos}"
-                                th:if="${(item.estado != 0) && (item.cantidad > 0)}"
-                                >
+                                th:if="${(item.estado != 0)}"
+                            >
                                 <td th:text="${item.nombre}"></td>
                                 <td th:text="${item.precio}"></td>
                                 <td th:text="${item.cantidad}"></td>
                                 <td th:text="${item.descripcion}"></td>
                                 <td>
-                                    <a class="btn btn-success" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Añadir al carrito</a>
+                                    <a class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                                 </td>
                             </tr>
                             </tbody>

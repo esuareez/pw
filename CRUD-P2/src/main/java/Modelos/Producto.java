@@ -9,24 +9,26 @@ public class Producto {
     private double precio;
     private String descripcion;
     private int estado;
+    private int cantidad;
 
     public Producto(){
     }
 
-    public Producto(String nombre, double precio, String descripcion){
+    public Producto(String nombre, int cantidad, double precio, String descripcion, int estado){
         this.nombre = nombre;
+        this.cantidad = cantidad;
         this.precio = precio;
         this.descripcion = descripcion;
-        this.estado = 1;
+        this.estado = estado;
     }
 
-    public Producto(int id, String nombre, double precio, String descripcion)
+    public Producto(int id, String nombre, int cantidad, double precio, String descripcion, int estado)
     {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
-        this.estado = 1;
+        this.estado = estado;
     }
 
     public void mezclar(Producto producto){
@@ -72,5 +74,13 @@ public class Producto {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }
