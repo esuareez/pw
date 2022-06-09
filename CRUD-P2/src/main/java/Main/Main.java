@@ -79,6 +79,14 @@ public class Main {
             ctx.redirect("/inventario");
         });
 
+        app.get("/producto/eliminar/{id}",ctx -> {
+            Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+            if(producto == null)
+                ctx.redirect("/inventario");
+            ProductoServ.getInstance().deleteProducto(producto);
+            ctx.redirect("/inventario");
+        });
+
         /*System.out.println("Productos registrados.");
         for(var item :ProductoServ.getInstance().getProductoList())
         {
