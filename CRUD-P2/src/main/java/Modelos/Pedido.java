@@ -17,6 +17,14 @@ public class Pedido {
     public Pedido() {
     }
 
+    public Pedido(List<ProductoPedido> productoPedido) {
+        //this.id = PedidoServ.getInstance().makeId();
+        this.productoPedido = productoPedido;
+        this.fecha = Date.from(Instant.now());
+        this.estado = 1;
+        this.nombre = "";
+    }
+
     public Pedido(List<ProductoPedido> productoPedido, String nombre) {
         //this.id = PedidoServ.getInstance().makeId();
         this.productoPedido = productoPedido;

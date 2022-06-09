@@ -47,6 +47,7 @@ public class ProductoController extends BaseController {
 
         app.get("/producto/editar/{id}",ctx -> {
             Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+            System.out.println(producto.getEstado());
             if(producto == null)
                 ctx.redirect("/inventario");
             Map<String,Object> modelo = new HashMap<>();
@@ -58,14 +59,12 @@ public class ProductoController extends BaseController {
             int id = Integer.parseInt(ctx.formParam("id"));
             String nombre = ctx.formParam("nombre");
             int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
-            System.out.println(cantidad);
             double precio = Double.parseDouble(ctx.formParam("precio"));
             String descripcion = ctx.formParam("descripcion");
             int estado = Integer.parseInt(ctx.formParam("estado"));
+            System.out.println(estado);
             Producto producto = new Producto(id,nombre,cantidad,precio,descripcion,estado);
             ProductoServ.getInstance().editarProducto(producto);
-            Producto p = ProductoServ.getInstance().editarProducto(producto);
-            System.out.println(p.getCantidad());
             ctx.redirect("/inventario");
         });
 

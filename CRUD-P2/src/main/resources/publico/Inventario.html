@@ -109,6 +109,7 @@
                                 <th>Nombre</th>
                                 <th>Precio</th>
                                 <th>Disponibilidad</th>
+                                <th>Estado</th>
                                 <th>Descripcion</th>
                                 <th>Accion</th>
                             </tr>
@@ -121,6 +122,10 @@
                                 <td th:text="${item.nombre}"></td>
                                 <td th:text="${item.precio}"></td>
                                 <td th:text="${item.cantidad}"></td>
+                                <span th:switch="${item.estado}">
+                                    <td th:case="1" th:text="Publico"></td>
+                                    <td th:case="2" th:text="Privado"></td>
+                                </span>
                                 <td th:text="${item.descripcion}"></td>
                                 <td>
                                     <a class="btn btn-success" th:href="'/producto/editar/'+${item.id}" th:value="${item.id}" ><i class="fa-solid fa-pen-to-square"></i></a>
