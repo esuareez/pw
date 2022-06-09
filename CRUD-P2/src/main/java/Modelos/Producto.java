@@ -29,11 +29,13 @@ public class Producto {
         this.precio = precio;
         this.descripcion = descripcion;
         this.estado = estado;
+        this.cantidad = cantidad;
     }
 
     public void mezclar(Producto producto){
         nombre = producto.getNombre();
         precio = producto.getPrecio();
+        cantidad = producto.getCantidad();
         descripcion = producto.getDescripcion();
         estado = producto.getEstado();
     }

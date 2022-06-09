@@ -56,11 +56,27 @@ public class Main {
         });
 
         app.get("/producto/editar/{id}",ctx -> {
-            int id = Integer.parseInt(ctx.formParam("id"));
-            Producto producto = ProductoServ.getInstance().getProductoporID(id);
+            Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+            if(producto == null)
+                ctx.redirect("/inventario");
             Map<String,Object> modelo = new HashMap<>();
             modelo.put("producto",producto);
-            ctx.render("publico/editarProducto.html");
+            ctx.render("publico/editarProducto.html",modelo);
+        });
+
+        app.post("/editarProducto",ctx -> {
+            int id = Integer.parseInt(ctx.formParam("id"));
+            String nombre = ctx.formParam("nombre");
+            int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+            System.out.println(cantidad);
+            double precio = Double.parseDouble(ctx.formParam("precio"));
+            String descripcion = ctx.formParam("descripcion");
+            int estado = Integer.parseInt(ctx.formParam("estado"));
+            Producto producto = new Producto(id,nombre,cantidad,precio,descripcion,estado);
+            ProductoServ.getInstance().editarProducto(producto);
+            Producto p = ProductoServ.getInstance().editarProducto(producto);
+            System.out.println(p.getCantidad());
+            ctx.redirect("/inventario");
         });
 
         /*System.out.println("Productos registrados.");
