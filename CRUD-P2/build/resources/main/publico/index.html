@@ -115,7 +115,7 @@
                             <tbody>
 
                             <tr th:each="item : ${productos}"
-                                th:if="${(item.estado != 0) && (item.cantidad > 0)}"
+                                th:if="${(item.estado != 0) && (item.cantidad > 0) && (item.estado != 2)}"
                                 >
                                 <td th:text="${item.nombre}"></td>
                                 <td th:text="${item.precio}"></td>

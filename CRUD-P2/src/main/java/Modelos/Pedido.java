@@ -12,33 +12,26 @@ public class Pedido {
     private List<ProductoPedido> productoPedido;
     private Date fecha;
     private int estado;
-    private String nombre;
+    private Usuario usuario;
 
     public Pedido() {
     }
 
-    public Pedido(List<ProductoPedido> productoPedido) {
+    public Pedido(List<ProductoPedido> productoPedido, Usuario usuario) {
         //this.id = PedidoServ.getInstance().makeId();
         this.productoPedido = productoPedido;
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
-        this.nombre = "";
+        this.usuario = usuario;
+
     }
 
-    public Pedido(List<ProductoPedido> productoPedido, String nombre) {
-        //this.id = PedidoServ.getInstance().makeId();
-        this.productoPedido = productoPedido;
-        this.fecha = Date.from(Instant.now());
-        this.estado = 1;
-        this.nombre = nombre;
-    }
-
-    public Pedido(int id,List<ProductoPedido> productoPedido, String nombre){
+    public Pedido(int id,List<ProductoPedido> productoPedido, Usuario usuario){
         this.id = id;
         this.productoPedido = productoPedido;
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
-        this.nombre = nombre;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -73,11 +66,11 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

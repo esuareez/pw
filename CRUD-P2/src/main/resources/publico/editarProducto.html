@@ -93,7 +93,7 @@
         </header>
 
         <div class="page-heading">
-            <h3>Editar producto: </h3>
+            <h3>Editar producto</h3>
             <p><small>Detalles del producto</small></p>
         </div>
         <div class="page-content">
@@ -142,8 +142,16 @@
                                                     </div>
                                                     <div class="col-md-8 form-group">
                                                         <select class="choices form-select" name="estado" th:value="${producto} ? ${producto.estado} : ''">
-                                                            <option value="1">Publico</option>
-                                                            <option value="2">Privado</option>
+                                                            <span th:switch="${producto.estado}">
+                                                                <span th:case="1">
+                                                                    <option th:value="${producto.estado}" th:text="Publico"></option>
+                                                                    <option value="2">Privado</option>
+                                                                </span>
+                                                                <span th:case="2">
+                                                                    <option th:value="${producto.estado}" th:text="Privado"></option>
+                                                                    <option value="1">Publico</option>
+                                                                </span>
+                                                            </span>
                                                         </select>
                                                         <small class="text-muted"><i>Publico: disponible para comprar. Privado: no disponible para comprar.</i></small>
                                                     </div>
