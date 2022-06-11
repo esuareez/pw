@@ -21,6 +21,7 @@
 
 <body>
 <div id="app">
+    <!-- SIDEBAR: Datos de la barra de la izquierda -->
     <div id="sidebar" class="active">
         <div class="sidebar-wrapper active">
             <div class="sidebar-header">
@@ -35,9 +36,25 @@
             </div>
             <div class="sidebar-menu">
                 <ul class="menu">
+
+                    <li class="sidebar-title">Usuario</li>
+                    <li class="sidebar-item  has-sub">
+                        <a href="#" class='sidebar-link'>
+                            <i class="bi bi-person"></i>
+                            <span>Usuario</span>
+                        </a>
+                        <ul class="submenu ">
+                            <li class="submenu-item ">
+                                <a th:href="@{/login}">Iniciar sesion</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a th:href="@{/signup}">Crear cuenta</a>
+                            </li>
+                        </ul>
+
                     <li class="sidebar-title">Menu</li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item active">
                         <a th:href="@{/}" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Inicio</span>
@@ -50,41 +67,47 @@
                             <span>Carrito</span>
                         </a>
                     </li>
+                    <span th:switch="${rol}">
+                        <span th:case="admin">
+                            <li class="sidebar-title">Administrador</li>
+                            <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-box-seam"></i>
+                                <span>Producto</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a th:href="@{/inventario}">Productos</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a th:href="@{/crearProducto}">Crear Producto</a>
+                                </li>
+                            </ul>
 
-                    <li class="sidebar-title">Administrador</li>
-                    <li class="sidebar-item  has-sub active">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-box-seam"></i>
-                            <span>Producto</span>
-                        </a>
-                        <ul class="submenu ">
-                            <li class="submenu-item ">
-                                <a th:href="@{/inventario}">Productos</a>
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-card-checklist"></i>
+                                <span>Historial de Pedidos</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-person-lines-fill"></i>
+                                <span>Listado de usuarios</span>
+                            </a>
+                        </li>
                             </li>
-                            <li class="submenu-item">
-                                <a th:href="@{/crearProducto}">Crear Producto</a>
-                            </li>
-                        </ul>
+                        </span>
 
-                    <li class="sidebar-item">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-card-checklist"></i>
-                            <span>Historial de Pedidos</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-person-lines-fill"></i>
-                            <span>Listado de usuarios</span>
-                        </a>
-                    </li>
-                    </li>
+                    </span>
+
 
                 </ul>
             </div>
             <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
         </div>
     </div>
+    <!-- Fin Barra -->
     <div id="main">
         <header class="mb-3">
             <a href="#" class="burger-btn d-block d-xl-none">

@@ -3,21 +3,24 @@ package Modelos;
 public class Usuario {
     private int id;
     private String user;
+    private String nombre;
     private String password;
     private String rol;
 
     public Usuario() {
     }
 
-    public Usuario(String user, String password, String rol) {
+    public Usuario(String user, String nombre, String password, String rol) {
         this.user = user;
+        this.nombre = nombre;
         this.password = password;
         this.rol = rol;
     }
 
-    public Usuario(int id, String user, String password, String rol) {
+    public Usuario(int id, String user, String nombre, String password, String rol) {
         this.id = id;
         this.user = user;
+        this.nombre = nombre;
         this.password = password;
         this.rol = rol;
     }
@@ -52,5 +55,13 @@ public class Usuario {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

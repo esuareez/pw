@@ -17,9 +17,12 @@ public class UsuarioServ {
     }
 
     // ADMIN
-    private Usuario admin = new Usuario(1,"admin","admin","admin");
+    private Usuario admin = new Usuario(1,"admin","admin","admin","admin");
+    private Usuario user = new Usuario("eliam","eliam","123","cliente");
     public UsuarioServ(){
         usuarioList.add(admin);
+        crearUsuario(user);
+        usuarioList.add(user);
     }
 
     public static UsuarioServ getInstance() {
@@ -29,7 +32,7 @@ public class UsuarioServ {
     }
 
     public Usuario getUsuarioporUsuario(String user){
-        return usuarioList.stream().filter(e -> e.getUser().equalsIgnoreCase(user)).findFirst().orElse(null);
+        return usuarioList.stream().filter(e -> e.getUser().equals(user)).findFirst().orElse(null);
     }
 
     public Usuario getUsuarioporId(int id){
