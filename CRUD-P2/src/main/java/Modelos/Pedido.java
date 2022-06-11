@@ -9,7 +9,6 @@ import java.util.List;
 public class Pedido {
 
     private int id;
-    private List<ProductoPedido> productoPedido;
     private Date fecha;
     private int estado;
     private Usuario usuario;
@@ -17,18 +16,16 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(List<ProductoPedido> productoPedido, Usuario usuario) {
+    public Pedido(Usuario usuario) {
         //this.id = PedidoServ.getInstance().makeId();
-        this.productoPedido = productoPedido;
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
         this.usuario = usuario;
 
     }
 
-    public Pedido(int id,List<ProductoPedido> productoPedido, Usuario usuario){
+    public Pedido(int id, Usuario usuario){
         this.id = id;
-        this.productoPedido = productoPedido;
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
         this.usuario = usuario;
@@ -40,14 +37,6 @@ public class Pedido {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<ProductoPedido> getProductoPedido() {
-        return productoPedido;
-    }
-
-    public void setProductoPedido(List<ProductoPedido> productoPedido) {
-        this.productoPedido = productoPedido;
     }
 
     public Date getFecha() {

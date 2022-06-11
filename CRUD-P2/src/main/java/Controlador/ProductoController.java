@@ -3,6 +3,7 @@ package Controlador;
 import Modelos.Producto;
 import Modelos.Usuario;
 import Servicios.ProductoServ;
+import Servicios.UsuarioServ;
 import Util.BaseController;
 import io.javalin.Javalin;
 import ognl.ObjectElementsAccessor;
@@ -57,6 +58,9 @@ public class ProductoController extends BaseController {
             int estado = Integer.parseInt(ctx.formParam("estado"));
             Producto producto = new Producto(nombre,cantidad,precio,descripcion,estado);
             ProductoServ.getInstance().crearProducto(producto);
+            for(var item : ProductoServ.getInstance().getProductoList()){
+                System.out.println(item.getId()+" "+item.getNombre()+" "+item.getCantidad());
+            }
             ctx.redirect("/");
         });
 

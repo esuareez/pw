@@ -4,11 +4,13 @@ import Controlador.ProductoController;
 import Modelos.Pedido;
 import Modelos.Producto;
 import Modelos.ProductoPedido;
+import Modelos.Usuario;
 
 import java.sql.Date;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PedidoServ {
@@ -22,21 +24,20 @@ public class PedidoServ {
         }
         return instancia;
     }
-    /*Pedido pedido = new Pedido(productoPedidoList,"Eliam Pimentel");
-    ProductoPedido pp = new ProductoPedido(1,pedido, ProductoServ.getInstance().getProductoporID(1),5 );
-    ProductoPedido pp1 = new ProductoPedido(1,pedido, ProductoServ.getInstance().getProductoporID(2),2 );*/
 
     public PedidoServ() {
-        /*productoPedidoList.add(pp);
-        productoPedidoList.add(pp1);
-        crearPedido(pedido);*/
-
     }
 
     public Pedido getPedidoporId(int id){
         return pedidoList.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
     }
 
+    public Pedido getPedidoporUsuario(Usuario usuario){
+        return pedidoList.stream().filter(e -> e.getUsuario().getId() == usuario.getId()).findFirst().orElse(null);
+    }
+    /*
+    Pedido
+     */
     public Pedido crearPedido(Pedido pedido){
         int idGenerado = makeId();
         while(getPedidoporId(idGenerado) != null)
@@ -60,8 +61,70 @@ public class PedidoServ {
     public List<Pedido> getPedidoList() {
         return pedidoList;
     }
+
+    /*
+    ProductoPedido
+     */
+
+    public ProductoPedido getProductoPedidoporProducto(Producto producto){
+        return productoPedidoList.stream().filter(e -> e.getProducto().getId() == producto.getId()).findFirst().orElse(null);
+    }
+    public ProductoPedido getProductoPedidoporPedido(Pedido pedido){
+        return productoPedidoList.stream().filter(e -> e.getPedido().getId() == pedido.getId()).findFirst().orElse(null);
+    }
     public List<ProductoPedido> getProductoPedidoList() {
         return productoPedidoList;
+    }
+
+    public List<ProductoPedido> getProductosPedido(Usuario usuario){
+        List<ProductoPedido> lista = new ArrayList<>();
+        Pedido pedido = getPedidoporUsuario(usuario);
+        if(pedido == null)
+            return Collections.emptyList();
+        for(var item : productoPedidoList){
+            if(item.getPedido().getId() == pedido.getId()){
+                lista.add(item);
+            }
+        }
+        return lista;
+    }
+
+    public ProductoPedido addProducto(Producto producto, Usuario usuario){
+        Pedido pedido = getPedidoporUsuario(usuario);
+        if(pedido == null || pedido.getEstado() == 2)
+        {
+            pedido = new Pedido(usuario);
+            crearPedido(pedido);
+        }
+        ProductoPedido pp = getProductoPedidoporPedido(pedido);
+        if(pp == null || getProductoPedidoporProducto(pp.getProducto()) == null){
+            pp = new ProductoPedido(pedido,producto,1);
+            productoPedidoList.add(pp);
+        }else{
+            if(getProductoPedidoporProducto(pp.getProducto()) != null){
+                pp.setCantidad(pp.getCantidad()+1);
+            }
+        }
+        return pp;
+    }
+
+    public int getTotalProductosenCarrito(Usuario usuario){
+        for(var item : getPedidoList()) {
+            if(item.getUsuario().getId() == usuario.getId() && item.getEstado() == 1){
+                Pedido pedido = new Pedido(item.getUsuario());
+            }
+        }
+
+        ProductoPedido pp = getProductoPedidoporPedido(pedido);
+        if(pp == null || pedido == null)
+            return 0;
+        for(var item : getProductoPedidoList()){
+            if(item.getPedido().getId() == ){
+        }
+
+        }
+
+        return 0;
     }
 
     public int makeId(){

@@ -12,16 +12,11 @@ public class UsuarioServ {
     private static UsuarioServ instancia;
     private List<Usuario> usuarioList = new ArrayList<>();
 
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
     // ADMIN
     private Usuario admin = new Usuario(1,"admin","admin","admin","admin");
-    private Usuario user = new Usuario("eliam","eliam","123","cliente");
+    private Usuario user = new Usuario(2,"eliam","eliam","123","cliente");
     public UsuarioServ(){
         usuarioList.add(admin);
-        crearUsuario(user);
         usuarioList.add(user);
     }
 
@@ -31,8 +26,12 @@ public class UsuarioServ {
         return instancia;
     }
 
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
     public Usuario getUsuarioporUsuario(String user){
-        return usuarioList.stream().filter(e -> e.getUser().equals(user)).findFirst().orElse(null);
+        return usuarioList.stream().filter(e -> e.getUser().equalsIgnoreCase(user)).findFirst().orElse(null);
     }
 
     public Usuario getUsuarioporId(int id){
@@ -44,6 +43,10 @@ public class UsuarioServ {
             return null;
         usuario.setId(makeId());
         usuarioList.add(usuario);
+        System.out.println("UsuarioServ add");
+        for(var item : usuarioList){
+            System.out.println(item.getId()+" "+item.getNombre()+" "+item.getRol());
+        }
         return usuario;
     }
 
@@ -56,4 +59,5 @@ public class UsuarioServ {
         }
         return num;
     }
+
 }

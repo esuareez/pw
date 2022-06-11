@@ -96,7 +96,7 @@
                                 <span>Listado de usuarios</span>
                             </a>
                         </li>
-                                </li>
+                            </li>
                         </span>
 
                     </span>
@@ -138,14 +138,14 @@
                             <tbody>
 
                             <tr th:each="item : ${productos}"
-                                th:if="${(item.estado != 0) && (item.cantidad > 0) && (item.estado != 2)}"
-                                >
+                               
+                            >
                                 <td th:text="${item.nombre}"></td>
                                 <td th:text="${item.precio}"></td>
                                 <td th:text="${item.cantidad}"></td>
                                 <td th:text="${item.descripcion}"></td>
                                 <td>
-                                    <a class="btn btn-success" th:href="'/user/add/'+${item.id}" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</a>
+                                    <a class="btn btn-success" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Añadir al carrito</a>
                                 </td>
                             </tr>
                             </tbody>

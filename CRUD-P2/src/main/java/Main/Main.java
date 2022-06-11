@@ -1,18 +1,10 @@
 package Main;
 
+import Controlador.PedidoController;
 import Controlador.ProductoController;
 import Controlador.UsuarioController;
-import Servicios.PedidoServ;
-import Servicios.ProductoServ;
-import Modelos.Producto;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -30,6 +22,7 @@ public class Main {
 
         new ProductoController(app).aplicarRutas();
         new UsuarioController(app).aplicarRutas();
+        new PedidoController(app).aplicarRutas();
 
     }
 }

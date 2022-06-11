@@ -145,7 +145,7 @@
                                 <td th:text="${item.cantidad}"></td>
                                 <td th:text="${item.descripcion}"></td>
                                 <td>
-                                    <a class="btn btn-success" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Añadir al carrito</a>
+                                    <a class="btn btn-success" th:href="'/user/add/'+${item.id}" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</a>
                                 </td>
                             </tr>
                             </tbody>

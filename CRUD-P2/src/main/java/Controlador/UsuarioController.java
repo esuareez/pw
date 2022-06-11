@@ -5,9 +5,6 @@ import Servicios.UsuarioServ;
 import Util.BaseController;
 import io.javalin.Javalin;
 
-import static io.javalin.apibuilder.ApiBuilder.*;
-import static io.javalin.apibuilder.ApiBuilder.get;
-
 public class UsuarioController extends BaseController {
     public UsuarioController(Javalin app) {
         super(app);
@@ -23,6 +20,10 @@ public class UsuarioController extends BaseController {
             System.out.println(usuario+" "+password);
             Usuario user = UsuarioServ.getInstance().getUsuarioporUsuario(usuario);
             System.out.println(user.getUser()+" "+user.getPassword()+" "+user.getRol());
+            System.out.println("UsuarioController add");
+            for(var item : UsuarioServ.getInstance().getUsuarioList()){
+                System.out.println(item.getId()+" "+item.getNombre()+" "+item.getRol());
+            }
             if( user != null) {
                 if(user.getPassword().equals(password)){
                     ctx.sessionAttribute("usuario",user);
@@ -51,10 +52,11 @@ public class UsuarioController extends BaseController {
                 ctx.redirect("/signup");
             }else{
                 Usuario user = new Usuario(usuario,nombre,password,"cliente");
+                System.out.println(user.getId()+" "+user.getNombre()+" "+user.getRol());
                 UsuarioServ.getInstance().crearUsuario(user);
-                System.out.println(user.getId()+" "+user.getUser()+" "+user.getRol());
-                Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(user.getUser());
-                System.out.println(u.getId()+" "+u.getUser()+" "+u.getRol());
+
+                //Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(user.getUser());
+                //System.out.println(u.getId()+" "+u.getUser()+" "+u.getRol());
                 ctx.redirect("/login");
             }
         });

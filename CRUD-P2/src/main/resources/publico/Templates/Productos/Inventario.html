@@ -143,7 +143,7 @@
                                 th:if="${(item.estado != 0)}"
                             >
                                 <td th:text="${item.nombre}"></td>
-                                <td th:text="${item.precio}"></td>
+                                <td th:text="${item.id}"></td>
                                 <td th:text="${item.cantidad}"></td>
                                 <span th:switch="${item.estado}">
                                     <td th:case="1" th:text="Publico"></td>
