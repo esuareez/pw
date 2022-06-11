@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -8,17 +8,15 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
 
-    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+    <link rel="stylesheet" href="/assets/vendors/simple-datatables/style.css">
 
-    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
-    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/app.css">
-    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="shortcut icon" href="/assets/images/favicon.svg" type="image/x-icon">
 </head>
 
 <body>
@@ -28,7 +26,7 @@
             <div class="sidebar-header">
                 <div class="d-flex justify-content-between">
                     <div class="logo">
-                        <a th:href="@{/}"><img src="assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+                        <a th:href="@{/}"><img src="../../assets/images/logo/logo.png" alt="Logo" srcset=""></a>
                     </div>
                     <div class="toggler">
                         <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -39,7 +37,7 @@
                 <ul class="menu">
                     <li class="sidebar-title">Menu</li>
 
-                    <li class="sidebar-item ">
+                    <li class="sidebar-item">
                         <a th:href="@{/}" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Inicio</span>
@@ -55,7 +53,7 @@
 
                     <li class="sidebar-title">Administrador</li>
                     <li class="sidebar-item  has-sub active">
-                        <a  class='sidebar-link'>
+                        <a href="#" class='sidebar-link'>
                             <i class="bi bi-box-seam"></i>
                             <span>Producto</span>
                         </a>
@@ -63,8 +61,8 @@
                             <li class="submenu-item ">
                                 <a th:href="@{/inventario}">Productos</a>
                             </li>
-                            <li class="submenu-item active">
-                                <a href="#">Crear Producto</a>
+                            <li class="submenu-item">
+                                <a th:href="@{/crearProducto}">Crear Producto</a>
                             </li>
                         </ul>
 
@@ -95,7 +93,7 @@
         </header>
 
         <div class="page-heading">
-            <h3>Nuevo producto</h3>
+            <h3>Editar producto</h3>
             <p><small>Detalles del producto</small></p>
         </div>
         <div class="page-content">
@@ -109,44 +107,53 @@
                                     <div class="card-header">
                                         <h4 class="card-title">Datos del producto</h4>
                                     </div>
-                                    <form class="form form-center" method="POST" action="/crearProducto">
+                                    <form class="form form-center" method="POST" action="/editarProducto">
                                         <div class="card-body">
                                             <div class="form-body ">
                                                 <div class="row ">
+                                                    <input type="hidden" class="form-control" name="id" th:value="${producto} ? ${producto.id} : ''">
                                                     <div class="col-md-4 ">
                                                         <label>Nombre del producto</label>
                                                     </div>
                                                     <div class="col-md-8 form-group">
                                                         <input required type="text" id="first-name"
-                                                               class="form-control" name="nombre"
-                                                               placeholder="Winasorb Antigripal">
+                                                               class="form-control" th:value="${producto} ? ${producto.nombre} : ''" name="nombre">
+
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>Precio</label>
                                                     </div>
                                                     <div class="col-md-8 form-group">
-                                                        <input required type="number"
+                                                        <input required type="number" id="contact-info"
                                                                class="form-control" name="precio"
-                                                               placeholder="15">
+                                                               th:value="${producto} ? ${producto.precio} : ''">
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <label>Cantidad</label>
                                                     </div>
                                                     <div class="col-md-8 form-group">
-                                                        <input required type="number" id="contact-info"
-                                                               class="form-control" name="cantidad" placeholder="10">
+                                                        <input required type="number"
+                                                               class="form-control" name="cantidad" th:value="${producto} ? ${producto.cantidad} : ''">
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <label>Estado</label>
                                                     </div>
                                                     <div class="col-md-8 form-group">
-                                                        <select class="choices form-select" name="estado">
-                                                            <option value="1">Público</option>
-                                                            <option value="2">Privado</option>
+                                                        <select class="choices form-select" name="estado" th:value="${producto} ? ${producto.estado} : ''">
+                                                            <span th:switch="${producto.estado}">
+                                                                <span th:case="1">
+                                                                    <option th:value="${producto.estado}" th:text="Publico"></option>
+                                                                    <option value="2">Privado</option>
+                                                                </span>
+                                                                <span th:case="2">
+                                                                    <option th:value="${producto.estado}" th:text="Privado"></option>
+                                                                    <option value="1">Publico</option>
+                                                                </span>
+                                                            </span>
                                                         </select>
-                                                        <small class="text-muted"><i>Público: disponible para comprar. Privado: no disponible para comprar.</i></small>
+                                                        <small class="text-muted"><i>Publico: disponible para comprar. Privado: no disponible para comprar.</i></small>
                                                     </div>
 
                                                     <div class="form-group mb-3">
@@ -154,11 +161,11 @@
                                                                class="form-label">Descripción del producto</label>
                                                         <textarea required class="form-control"
                                                                   id="exampleFormControlTextarea1" rows="3"
-                                                                  name="descripcion"></textarea>
+                                                                  name="descripcion" th:value="${producto} ? ${producto.descripcion} : ''" th:text="${producto} ? ${producto.descripcion} : ''"></textarea>
                                                     </div>
 
                                                     <div class="col-sm-12 d-flex justify-content-end">
-                                                        <button type="submit" name="submit" value="value"
+                                                        <button type="submit"
                                                                 class="btn btn-primary me-1 mb-1">Guardar
                                                             cambios</button>
                                                         <button type="reset"
@@ -194,15 +201,15 @@
         </footer>
     </div>
 </div>
-<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
 
-<script src="assets/vendors/apexcharts/apexcharts.js"></script>
-<script src="assets/js/pages/dashboard.js"></script>
+<script src="/assets/vendors/apexcharts/apexcharts.js"></script>
+<script src="/assets/js/pages/dashboard.js"></script>
 
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/vendors/simple-datatables/simple-datatables.js"></script>
 <script>
     // Simple Datatable
     let table1 = document.querySelector('#table1');

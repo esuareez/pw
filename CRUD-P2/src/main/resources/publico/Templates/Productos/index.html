@@ -9,13 +9,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
 
-    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+    <link rel="stylesheet" href="../../assets/vendors/simple-datatables/style.css">
 
-    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
-    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="../../assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="../../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
 </head>
 
@@ -26,7 +26,7 @@
             <div class="sidebar-header">
                 <div class="d-flex justify-content-between">
                     <div class="logo">
-                        <a th:href="@{/}"><img src="assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+                        <a th:href="@{/}"><img src="../../assets/images/logo/logo.png" alt="Logo" srcset=""></a>
                     </div>
                     <div class="toggler">
                         <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -35,6 +35,22 @@
             </div>
             <div class="sidebar-menu">
                 <ul class="menu">
+
+                    <li class="sidebar-title">Usuario</li>
+                    <li class="sidebar-item  has-sub">
+                        <a href="#" class='sidebar-link'>
+                            <i class="bi bi-person"></i>
+                            <span>Usuario</span>
+                        </a>
+                        <ul class="submenu ">
+                            <li class="submenu-item ">
+                                <a th:href="@{/login}">Iniciar sesion</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a th:href="@{/}">Crear cuenta</a>
+                            </li>
+                        </ul>
+
                     <li class="sidebar-title">Menu</li>
 
                     <li class="sidebar-item active">
@@ -50,35 +66,40 @@
                             <span>Carrito</span>
                         </a>
                     </li>
+                    <span th:switch="${rol}">
+                        <span th:case="admin">
+                            <li class="sidebar-title">Administrador</li>
+                            <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-box-seam"></i>
+                                <span>Producto</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a th:href="@{/inventario}">Productos</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a th:href="@{/crearProducto}">Crear Producto</a>
+                                </li>
+                            </ul>
 
-                    <li class="sidebar-title">Administrador</li>
-                    <li class="sidebar-item  has-sub">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-box-seam"></i>
-                            <span>Producto</span>
-                        </a>
-                        <ul class="submenu ">
-                            <li class="submenu-item ">
-                                <a th:href="@{/inventario}">Productos</a>
-                            </li>
-                            <li class="submenu-item">
-                                <a th:href="@{/crearProducto}">Crear Producto</a>
-                            </li>
-                        </ul>
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-card-checklist"></i>
+                                <span>Historial de Pedidos</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-person-lines-fill"></i>
+                                <span>Listado de usuarios</span>
+                            </a>
+                        </li>
+                                </li>
+                        </span>
 
-                    <li class="sidebar-item">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-card-checklist"></i>
-                            <span>Historial de Pedidos</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-person-lines-fill"></i>
-                            <span>Listado de usuarios</span>
-                        </a>
-                    </li>
-                    </li>
+                    </span>
+
 
                 </ul>
             </div>
@@ -146,15 +167,15 @@
         </footer>
     </div>
 </div>
-<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="../../assets/js/bootstrap.bundle.min.js"></script>
 
-<script src="assets/vendors/apexcharts/apexcharts.js"></script>
-<script src="assets/js/pages/dashboard.js"></script>
+<script src="../../assets/vendors/apexcharts/apexcharts.js"></script>
+<script src="../../assets/js/pages/dashboard.js"></script>
 
-<script src="assets/js/main.js"></script>
+<script src="../../assets/js/main.js"></script>
 
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+<script src="../../assets/vendors/simple-datatables/simple-datatables.js"></script>
 <script>
     // Simple Datatable
     let table1 = document.querySelector('#table1');

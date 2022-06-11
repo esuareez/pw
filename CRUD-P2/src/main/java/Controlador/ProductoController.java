@@ -1,9 +1,11 @@
 package Controlador;
 
 import Modelos.Producto;
+import Modelos.Usuario;
 import Servicios.ProductoServ;
 import Util.BaseController;
 import io.javalin.Javalin;
+import ognl.ObjectElementsAccessor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,15 +18,35 @@ public class ProductoController extends BaseController {
     }
 
     public void aplicarRutas(){
+        app.before("/*",ctx -> {
+
+        });
         app.get("/",ctx -> {
-            List<Producto> productoList = ProductoServ.getInstance().getProductoList();
+            Usuario user = ctx.sessionAttribute("usuario");
             Map<String,Object> modelo = new HashMap<>();
+            if(user == null || user.getRol().equalsIgnoreCase("cliente")){
+                modelo.put("rol","cliente");
+            }else{
+                if(user.getRol().equalsIgnoreCase("admin")){
+                    modelo.put("rol","admin");
+                }
+            }
+            List<Producto> productoList = ProductoServ.getInstance().getProductoList();
             modelo.put("productos",productoList);
-            ctx.render("publico/index.html",modelo);
+            ctx.render("publico/Templates/Productos/index.html",modelo);
         });
 
         app.get("/crearProducto",ctx -> {
-            ctx.redirect("/crearProducto.html");
+            Usuario user = ctx.sessionAttribute("usuario");
+            Map<String,Object> modelo = new HashMap<>();
+            if(user == null || user.getRol().equalsIgnoreCase("cliente")){
+                modelo.put("rol","cliente");
+            }else{
+                if(user.getRol().equalsIgnoreCase("admin")){
+                    modelo.put("rol","admin");
+                }
+            }
+            ctx.render("publico/Templates/Productos/crearProducto.html",modelo);
         });
 
         app.post("/crearProducto", ctx -> {
@@ -39,20 +61,36 @@ public class ProductoController extends BaseController {
         });
 
         app.get("/inventario",ctx -> {
-            List<Producto> productoList = ProductoServ.getInstance().getProductoList();
+            Usuario user = ctx.sessionAttribute("usuario");
             Map<String,Object> modelo = new HashMap<>();
+            if(user == null || user.getRol().equalsIgnoreCase("cliente")){
+                modelo.put("rol","cliente");
+            }else{
+                if(user.getRol().equalsIgnoreCase("admin")){
+                    modelo.put("rol","admin");
+                }
+            }
+            List<Producto> productoList = ProductoServ.getInstance().getProductoList();
             modelo.put("productos",productoList);
-            ctx.render("publico/Inventario.html", modelo);
+            ctx.render("publico/Templates/Productos/Inventario.html", modelo);
         });
 
         app.get("/producto/editar/{id}",ctx -> {
+            Usuario user = ctx.sessionAttribute("usuario");
+            Map<String,Object> modelo = new HashMap<>();
+            if(user == null || user.getRol().equalsIgnoreCase("cliente")){
+                modelo.put("rol","cliente");
+            }else{
+                if(user.getRol().equalsIgnoreCase("admin")){
+                    modelo.put("rol","admin");
+                }
+            }
             Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
             System.out.println(producto.getEstado());
             if(producto == null)
                 ctx.redirect("/inventario");
-            Map<String,Object> modelo = new HashMap<>();
             modelo.put("producto",producto);
-            ctx.render("publico/editarProducto.html",modelo);
+            ctx.render("publico/Templates/Productos/editarProducto.html",modelo);
         });
 
         app.post("/editarProducto",ctx -> {
@@ -69,11 +107,20 @@ public class ProductoController extends BaseController {
         });
 
         app.get("/producto/eliminar/{id}",ctx -> {
+            Usuario user = ctx.sessionAttribute("usuario");
+            Map<String,Object> modelo = new HashMap<>();
+            if(user == null || user.getRol().equalsIgnoreCase("cliente")){
+                modelo.put("rol","cliente");
+            }else{
+                if(user.getRol().equalsIgnoreCase("admin")){
+                    modelo.put("rol","admin");
+                }
+            }
             Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
             if(producto == null)
                 ctx.redirect("/inventario");
             ProductoServ.getInstance().deleteProducto(producto);
-            ctx.redirect("/inventario");
+            ctx.render("/inventario",modelo);
         });
     }
 }

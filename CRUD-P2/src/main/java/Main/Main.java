@@ -1,6 +1,7 @@
 package Main;
 
 import Controlador.ProductoController;
+import Controlador.UsuarioController;
 import Servicios.PedidoServ;
 import Servicios.ProductoServ;
 import Modelos.Producto;
@@ -28,6 +29,7 @@ public class Main {
         app.start(8000);
 
         new ProductoController(app).aplicarRutas();
+        new UsuarioController(app).aplicarRutas();
 
     }
 }
