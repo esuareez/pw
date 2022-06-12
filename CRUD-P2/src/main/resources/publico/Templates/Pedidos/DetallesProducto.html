@@ -8,9 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
 
     <link rel="stylesheet" href="../../assets/vendors/simple-datatables/style.css">
@@ -79,16 +77,16 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-item ">
+                    <li class="sidebar-item active">
                         <a th:href="@{/user/mi-carrito}" class='sidebar-link'>
                             <i class="bi bi-cart4"></i>
-                            <span>Carrito <span th:text="${carrito}" class="badge bg-dark text-white ms-1 rounded-pill"></span> </span>
+                            <span>Carrito</span>
                         </a>
                     </li>
                     <span th:switch="${rol}">
                         <span th:case="admin">
                             <li class="sidebar-title">Administrador</li>
-                            <li class="sidebar-item  has-sub active">
+                            <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-box-seam"></i>
                                 <span>Producto</span>
@@ -97,7 +95,7 @@
                                 <li class="submenu-item ">
                                     <a th:href="@{/admin/inventario}">Productos</a>
                                 </li>
-                                <li class="submenu-item active">
+                                <li class="submenu-item">
                                     <a th:href="@{/admin/crearProducto}">Crear Producto</a>
                                 </li>
                             </ul>
@@ -134,100 +132,44 @@
         </header>
 
         <div class="page-heading">
-            <h3>Nuevo producto</h3>
-            <p><small>Detalles del producto</small></p>
+            <h3>Mi carrito</h3>
         </div>
         <div class="page-content">
-            <!-- Basic Vertical form layout section start -->
-            <div id="main-content container-fluid">
-                <div class="page-heading">
-                    <div class="col-12 col-md-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="card-header">
-                                        <h4 class="card-title">Datos del producto</h4>
-                                    </div>
-                                    <form class="form form-center" method="POST" action="/admin/crearProducto">
-                                        <div class="card-body">
-                                            <div class="form-body ">
-                                                <div class="row ">
-                                                    <div class="col-md-4 ">
-                                                        <label>Nombre del producto</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input required type="text" id="first-name"
-                                                               class="form-control" name="nombre"
-                                                               placeholder="Winasorb Antigripal">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Precio</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input required type="number"
-                                                               class="form-control" name="precio"
-                                                               placeholder="15">
-                                                    </div>
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        Productos agregados
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="table1">
+                            <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${productos}">
+                                <td th:text="${item.getProducto.getNombre}"></td>
+                                <td th:text="${item.getProducto.getPrecio}"></td>
+                                <td th:text="${item.cantidad}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                                                    <div class="col-md-4">
-                                                        <label>Cantidad</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input required type="number" id="contact-info"
-                                                               class="form-control" name="cantidad" placeholder="10">
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <label>Estado</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <select class="choices form-select" name="estado">
-                                                            <option value="1">Público</option>
-                                                            <option value="2">Privado</option>
-                                                        </select>
-                                                        <small class="text-muted"><i>Público: disponible para comprar. Privado: no disponible para comprar.</i></small>
-                                                    </div>
-
-                                                    <div class="form-group mb-3">
-                                                        <label for="exampleFormControlTextarea1"
-                                                               class="form-label">Descripción del producto</label>
-                                                        <textarea required class="form-control"
-                                                                  id="exampleFormControlTextarea1" rows="3"
-                                                                  name="descripcion"></textarea>
-                                                    </div>
-
-                                                    <div class="col-sm-12 d-flex justify-content-end">
-                                                        <button type="submit" name="submit" value="value"
-                                                                class="btn btn-primary me-1 mb-1">Guardar
-                                                            cambios</button>
-                                                        <button type="reset"
-                                                                class="btn btn-light-secondary me-1 mb-1">Reiniciar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                        </div>
-
+                    <div class="card-header d-flex justify-content-end">
+                         <a class="btn btn-success" th:href="@{/pedidos}">Volver</a>
                     </div>
                 </div>
-
-
-
-            </div>
+            </section>
         </div>
 
         <footer>
             <div class="footer clearfix mb-0 text-muted">
                 <div class="float-start">
                     <p>Eliam Pimentel - 10138836</p>
-                </div>
-                <div class="float-end">
-                    <a href="index.html"><h3><span class="text-success"><i class="bi bi-box-arrow-in-right"></i></span></h3></a>
-                    <a href="index.html"><h3><span class="text-danger"><i class="bi bi-box-arrow-right"></i></span></h3></a>
                 </div>
             </div>
         </footer>

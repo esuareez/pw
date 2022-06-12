@@ -93,8 +93,8 @@ public class PedidoController extends BaseController {
                         PedidoServ.getInstance().completarPedido(pedido);
                         ctx.redirect("/user/mi-carrito");
                     }
-
                 });
+
             });
         });
     }

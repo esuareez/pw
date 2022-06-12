@@ -11,6 +11,7 @@ public class Pedido {
     private int id;
     private Date fecha;
     private int estado;
+    private double total;
     private Usuario usuario;
 
     public Pedido() {
@@ -20,6 +21,7 @@ public class Pedido {
         //this.id = PedidoServ.getInstance().makeId();
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
+        this.total = 0;
         this.usuario = usuario;
 
     }
@@ -28,6 +30,7 @@ public class Pedido {
         this.id = id;
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
+        this.total = 0;
         this.usuario = usuario;
     }
 
@@ -61,5 +64,13 @@ public class Pedido {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

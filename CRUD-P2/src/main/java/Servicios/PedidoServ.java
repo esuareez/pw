@@ -60,6 +60,7 @@ public class PedidoServ {
     }
     public Pedido completarPedido(Pedido p){
         Pedido pedido = getPedidoporId(p.getId());
+        double total = 0;
         if(pedido == null)
         {
             System.out.println("El pedido no existe.");
@@ -68,9 +69,11 @@ public class PedidoServ {
         pedido.setEstado(2);
         for( var item : getProductoPedidoList()){
             if(item.getPedido().getId() == pedido.getId()){
+                total += (item.getProducto().getPrecio() * item.getCantidad());
                 item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
             }
         }
+        pedido.setTotal(total);
         return pedido;
     }
     public List<Pedido> getPedidoList() {
@@ -118,9 +121,10 @@ public class PedidoServ {
             pp = new ProductoPedido(pedido,producto,1);
             productoPedidoList.add(pp);
         }else{
-            if(getProductoPedidoporProducto(pp.getProducto()) != null && pp.getProducto().getCantidad() > pp.getCantidad())
-                pp.setCantidad(pp.getCantidad()+1);
-
+            for(var item : getProductoPedidoList()){
+                if(pp.getProducto().getCantidad() > pp.getCantidad() && pp.getProducto().getId() == item.getProducto().getId())
+                    pp.setCantidad(pp.getCantidad()+1);
+            }
         }
         return pp;
     }

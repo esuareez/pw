@@ -1,6 +1,8 @@
 package Controlador;
 
+import Modelos.Pedido;
 import Modelos.Producto;
+import Modelos.ProductoPedido;
 import Modelos.Usuario;
 import Servicios.PedidoServ;
 import Servicios.ProductoServ;
@@ -115,6 +117,19 @@ public class ProductoController extends BaseController {
                         ctx.redirect("/admin/inventario");
                     ProductoServ.getInstance().deleteProducto(producto);
                     ctx.redirect("/admin/inventario");
+                });
+
+                get("/pedidos",ctx ->{
+                    List<Pedido> pedidoList = PedidoServ.getInstance().getPedidoList();
+                    modelo.put("pedidos",pedidoList);
+                    ctx.render("publico/Templates/Pedidos/Historial.html",modelo);
+                });
+
+                get("/pedido/{id}", ctx -> {
+                    Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
+                    List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(pedido.getUsuario());
+                    modelo.put("productos",pp);
+                    ctx.render("publico/Templates/Pedidos/DetallesProducto.html",modelo);
                 });
             });
         });
