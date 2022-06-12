@@ -56,7 +56,6 @@ public class UsuarioController extends BaseController {
                     String usuario = ctx.formParam("usuario");
                     String nombre = ctx.formParam("nombre");
                     String password = ctx.formParam("password");
-
                     if(UsuarioServ.getInstance().getUsuarioporUsuario(usuario) != null){
                         ctx.redirect("/signup");
                     }else{

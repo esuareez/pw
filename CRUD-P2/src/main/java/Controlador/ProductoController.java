@@ -38,9 +38,12 @@ public class ProductoController extends BaseController {
                             }
                         }
                     }else{
+                        total = 0;
                         modelo.put("isLogin",0);
+                        modelo.put("rol",null);
                     }
                 });
+
                 get("/",ctx -> {
                     List<Producto> productoList = ProductoServ.getInstance().getProductoList();
                     modelo.put("productos",productoList);
@@ -48,6 +51,7 @@ public class ProductoController extends BaseController {
                     ctx.render("publico/Templates/Productos/index.html",modelo);
                 });
             });
+
             path("/admin/", () -> {
                 before(ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");

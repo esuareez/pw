@@ -135,48 +135,48 @@
             <h3>Mi carrito</h3>
         </div>
         <div class="page-content">
-            <section class="section">
-                <div class="card">
-                    <div class="card-header">
-                        Productos agregados
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped" id="table1">
-                            <thead>
-                            <tr>
-                                <th> </th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
+            <span th:switch="${isEmpty}">
+                <span th:case="1">
+                    <section class="section">
+                        <div class="card">
+                            <div class="card-header">
+                                Productos agregados
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped" id="table1">
+                                    <thead>
+                                    <tr>
+                                        <th> </th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item : ${carrito}">
+                                        <td>
+                                            <a class="btn btn-danger" th:href="'/user/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
+                                        </td>
+                                        <td th:text="${item.getProducto.getNombre}"></td>
+                                        <td th:text="${item.getProducto.getPrecio}"></td>
+                                        <td th:text="${item.cantidad}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                            </tr>
-                            </thead>
-                            <tbody>
+                            <div class="card-header d-flex justify-content-end">
+                                 <a class="btn btn-success" th:href="'/user/procesar/'+${pedido}"><i class="fa-solid fa-trash-can"></i>Procesar compra</a>
+                                <b>Total:</b>&nbsp; RD$<p th:text="${total}"></p>
+                            </div>
+                        </div>
+                    </section>
+                </span>
+                <span th:case="0">
+                    <p> El carrito esta <b>vacio</b>.</p>
+                </span>
 
-                            <tr th:each="item : ${carrito}"
-
-                            >
-                                <td>
-                                    <a class="btn btn-danger" th:href="'/user/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
-                                </td>
-                                <td th:text="${item.getProducto.getNombre}"></td>
-                                <td th:text="${item.getProducto.getPrecio}"></td>
-                                <td th:text="${item.cantidad}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-header d-flex justify-content-lg-start">
-                        <button >Procesar compra</button>
-                    </div>
-                    <div class="card-header d-flex justify-content-end">
-                        <b>Total:</b>&nbsp; RD$<p th:text="${total}"></p>
-                    </div>
-
-                </div>
-
-
-            </section>
+            </span>
         </div>
 
         <footer>

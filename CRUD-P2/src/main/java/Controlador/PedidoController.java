@@ -1,5 +1,6 @@
 package Controlador;
 
+import Modelos.Pedido;
 import Modelos.Producto;
 import Modelos.ProductoPedido;
 import Modelos.Usuario;
@@ -54,14 +55,19 @@ public class PedidoController extends BaseController {
                         ctx.redirect("/");
                     }else{
                         List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(user);
-                        for( var item : pp){
-                            ptotal += (item.getProducto().getPrecio() * item.getCantidad());
-                        }
+                        int id = 0;
                         if(pp == null){
-                            ctx.redirect("/");
+                            modelo.put("isEmpty",0);
+                            ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }else{
+                            for( var item : pp){
+                                ptotal += (item.getProducto().getPrecio() * item.getCantidad());
+                                id = item.getPedido().getId();
+                            }
                             modelo.put("total",ptotal);
                             modelo.put("carrito",pp);
+                            modelo.put("isEmpty",1);
+                            modelo.put("pedido",id);
                             ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }
                     }
@@ -79,6 +85,16 @@ public class PedidoController extends BaseController {
                     ctx.redirect("/user/mi-carrito");
                 });
 
+                get("/procesar/{id}", ctx -> {
+                    Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
+                    if(pedido == null || pedido.getEstado() == 2){
+                        ctx.redirect("/");
+                    }else{
+                        PedidoServ.getInstance().completarPedido(pedido);
+                        ctx.redirect("/user/mi-carrito");
+                    }
+
+                });
             });
         });
     }

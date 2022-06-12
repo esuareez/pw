@@ -58,12 +58,29 @@ public class PedidoServ {
         pedidoList.remove(pedido);
         return pedido;
     }
+    public Pedido completarPedido(Pedido p){
+        Pedido pedido = getPedidoporId(p.getId());
+        if(pedido == null)
+        {
+            System.out.println("El pedido no existe.");
+            return null;
+        }
+        pedido.setEstado(2);
+        for( var item : getProductoPedidoList()){
+            if(item.getPedido().getId() == pedido.getId()){
+                item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
+            }
+        }
+        return pedido;
+    }
     public List<Pedido> getPedidoList() {
         return pedidoList;
     }
 
     /*
+
     ProductoPedido
+
      */
 
     public ProductoPedido getProductoPedidoporProducto(Producto producto){
@@ -82,7 +99,7 @@ public class PedidoServ {
         if(pedido == null)
             return null;
         for(var item : productoPedidoList){
-            if(item.getPedido().getId() == pedido.getId()){
+            if(item.getPedido().getId() == pedido.getId() && item.getPedido().getEstado() == 1){
                 lista.add(item);
             }
         }
