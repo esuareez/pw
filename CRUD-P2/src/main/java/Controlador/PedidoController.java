@@ -47,13 +47,9 @@ public class PedidoController extends BaseController {
                     Usuario user = ctx.sessionAttribute("usuario");
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
                     PedidoServ.getInstance().addProducto(producto,user);
-                    for( var item : PedidoServ.getInstance().getPedidoList()){
-                        for(var it : PedidoServ.getInstance().getProductoPedidoList()){
-                            if(item.getId() == it.getPedido().getId()){
-                                System.out.println(item.getUsuario().getNombre()+" Numero de pedido: "+item.getId()+"\nProducto del pedido: "+it.getProducto().getNombre()+" "+it.getCantidad());
-                            }
-                        }
-                    }
+                    int total = PedidoServ.getInstance().getTotalProductosenCarrito(user);
+                    ctx.sessionAttribute("tc",total); // total en carrito
+                    System.out.println(total+" "+ctx.sessionAttribute("totalencarro"));
                     ctx.redirect("/");
                 });
 

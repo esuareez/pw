@@ -49,14 +49,12 @@ public class ProductoServ {
     public Producto editarProducto(Producto p)
     {
         Producto producto = getProductoporID(p.getId());
-        System.out.println(producto.getNombre()+" "+producto.getEstado());
         if(producto == null)
         {
             System.out.println("El producto no existe.");
             return null;
         }
         producto.mezclar(p);
-        System.out.println(producto.getNombre()+" "+producto.getEstado());
         return producto;
     }
 

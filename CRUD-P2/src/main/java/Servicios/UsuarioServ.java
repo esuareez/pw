@@ -43,10 +43,6 @@ public class UsuarioServ {
             return null;
         usuario.setId(makeId());
         usuarioList.add(usuario);
-        System.out.println("UsuarioServ add");
-        for(var item : usuarioList){
-            System.out.println(item.getId()+" "+item.getNombre()+" "+item.getRol());
-        }
         return usuario;
     }
 

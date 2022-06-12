@@ -19,8 +19,6 @@ public class UsuarioController extends BaseController {
             String password = ctx.formParam("password");
             System.out.println(usuario+" "+password);
             Usuario user = UsuarioServ.getInstance().getUsuarioporUsuario(usuario);
-            System.out.println(user.getUser()+" "+user.getPassword()+" "+user.getRol());
-            System.out.println("UsuarioController add");
             for(var item : UsuarioServ.getInstance().getUsuarioList()){
                 System.out.println(item.getId()+" "+item.getNombre()+" "+item.getRol());
             }
@@ -52,9 +50,7 @@ public class UsuarioController extends BaseController {
                 ctx.redirect("/signup");
             }else{
                 Usuario user = new Usuario(usuario,nombre,password,"cliente");
-                System.out.println(user.getId()+" "+user.getNombre()+" "+user.getRol());
                 UsuarioServ.getInstance().crearUsuario(user);
-
                 //Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(user.getUser());
                 //System.out.println(u.getId()+" "+u.getUser()+" "+u.getRol());
                 ctx.redirect("/login");
@@ -65,23 +61,5 @@ public class UsuarioController extends BaseController {
             ctx.sessionAttribute("usuario");
         });
 
-        /*app.routes(() -> {
-            path("/path/", () -> {
-                before(ctx -> {
-                    System.out.println("Entrando a la ruta path...");
-                });
-                get("/", ctx -> {
-                    ctx.result("Ruta path /");
-                });
-
-                get("/compras", ctx -> {
-                    ctx.result("Ruta /path/compras");
-                });
-
-                get("/otro", ctx -> {
-                    ctx.result("Ruta /path/otro");
-                });
-            });
-        });*/
     }
 }

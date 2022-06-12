@@ -101,30 +101,30 @@ public class PedidoServ {
             pp = new ProductoPedido(pedido,producto,1);
             productoPedidoList.add(pp);
         }else{
-            if(getProductoPedidoporProducto(pp.getProducto()) != null){
+            if(getProductoPedidoporProducto(pp.getProducto()) != null && pp.getProducto().getCantidad() > pp.getCantidad())
                 pp.setCantidad(pp.getCantidad()+1);
-            }
+
         }
         return pp;
     }
 
     public int getTotalProductosenCarrito(Usuario usuario){
+        int total = 0;
+        Pedido pedido = null;
         for(var item : getPedidoList()) {
             if(item.getUsuario().getId() == usuario.getId() && item.getEstado() == 1){
-                Pedido pedido = new Pedido(item.getUsuario());
+                pedido = item;
             }
         }
-
         ProductoPedido pp = getProductoPedidoporPedido(pedido);
         if(pp == null || pedido == null)
             return 0;
         for(var item : getProductoPedidoList()){
-            if(item.getPedido().getId() == ){
+            if(item.getPedido().getId() == pp.getPedido().getId()){
+                total+=item.getCantidad();
+            }
         }
-
-        }
-
-        return 0;
+        return total;
     }
 
     public int makeId(){
