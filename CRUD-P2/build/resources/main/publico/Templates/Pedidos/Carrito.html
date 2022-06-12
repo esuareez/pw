@@ -54,15 +54,15 @@
 
                     <li class="sidebar-title">Menu</li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item ">
                         <a th:href="@{/}" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Inicio</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item ">
-                        <a href="#" class='sidebar-link'>
+                    <li class="sidebar-item active">
+                        <a th:href="@{/user/mi-carrito}" class='sidebar-link'>
                             <i class="bi bi-cart4"></i>
                             <span>Carrito</span>
                         </a>
@@ -116,42 +116,46 @@
         </header>
 
         <div class="page-heading">
-            <h3>Mini tienda</h3>
+            <h3>Mi carrito</h3>
         </div>
         <div class="page-content">
             <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        Productos disponibles
+                        Productos añadidos
                     </div>
                     <div class="card-body">
                         <table class="table table-striped" id="table1">
                             <thead>
                             <tr>
+                                <th> </th>
                                 <th>Nombre</th>
                                 <th>Precio</th>
-                                <th>Disponibilidad</th>
-                                <th>Descripcion</th>
-                                <th>Accion</th>
+                                <th>Cantidad</th>
+
                             </tr>
                             </thead>
                             <tbody>
 
-                            <tr th:each="item : ${productos}"
-                               
+                            <tr th:each="item : ${carrito}"
+
                             >
-                                <td th:text="${item.nombre}"></td>
-                                <td th:text="${item.precio}"></td>
-                                <td th:text="${item.cantidad}"></td>
-                                <td th:text="${item.descripcion}"></td>
                                 <td>
-                                    <a class="btn btn-success" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Añadir al carrito</a>
+                                    <a class="btn btn-danger" th:href="'/user/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
                                 </td>
+                                <td th:text="${item.getProducto.getNombre}"></td>
+                                <td th:text="${item.getProducto.getPrecio}"></td>
+                                <td th:text="${item.cantidad}"></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-header d-flex justify-content-end">
+                        <b>Total:</b>&nbsp; RD$<p th:text="${total}"></p>
+                    </div>
+
                 </div>
+
 
             </section>
         </div>

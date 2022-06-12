@@ -80,7 +80,7 @@ public class PedidoServ {
         List<ProductoPedido> lista = new ArrayList<>();
         Pedido pedido = getPedidoporUsuario(usuario);
         if(pedido == null)
-            return Collections.emptyList();
+            return null;
         for(var item : productoPedidoList){
             if(item.getPedido().getId() == pedido.getId()){
                 lista.add(item);
@@ -106,6 +106,18 @@ public class PedidoServ {
 
         }
         return pp;
+    }
+
+    public void removeProducto(Producto producto, Usuario usuario){
+        Pedido pedido = getPedidoporUsuario(usuario);
+        if(pedido != null && pedido.getEstado() == 1)
+        {
+           for(var item : getProductoPedidoList()){
+               if(item.getPedido().getId() == pedido.getId() && item.getProducto().getId() == producto.getId()){
+                   productoPedidoList.remove(item);
+               }
+           }
+        }
     }
 
     public int getTotalProductosenCarrito(Usuario usuario){

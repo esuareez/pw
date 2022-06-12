@@ -34,6 +34,9 @@ public class ProductoController extends BaseController {
                         total = ctx.sessionAttribute("tc"); // total en carrito
                     }
                     Usuario user = ctx.sessionAttribute("usuario");
+                   //total = PedidoServ.getInstance().getTotalProductosenCarrito(user);
+                   // ctx.sessionAttribute("tc",total);
+                    System.out.println(total);
                     if(user == null || user.getRol().equalsIgnoreCase("cliente")){
                         modelo.put("rol","cliente");
                     }else{
@@ -41,7 +44,7 @@ public class ProductoController extends BaseController {
                             modelo.put("rol","admin");
                         }
                     }
-                    modelo.put("carrito",total);
+                    //modelo.put("carrito",total);
                 });
                 get("/",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");

@@ -37,10 +37,24 @@ public class PedidoController extends BaseController {
                     }
                 });
                 get("/mi-carrito", ctx -> {
+                    double ptotal = 0;
                     Usuario user = ctx.sessionAttribute("usuario");
-                    List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(user);
-                    modelo.put("carrito",pp);
-                    ctx.render("",modelo);
+                    if(user == null)
+                    {
+                        ctx.redirect("/");
+                    }else{
+                        List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(user);
+                        for( var item : pp){
+                            ptotal += (item.getProducto().getPrecio() * item.getCantidad());
+                        }
+                        if(pp == null){
+                            ctx.redirect("/");
+                        }else{
+                            modelo.put("total",ptotal);
+                            modelo.put("carrito",pp);
+                            ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
+                        }
+                    }
                 });
 
                 get("/add/{id}",ctx -> {
@@ -49,8 +63,13 @@ public class PedidoController extends BaseController {
                     PedidoServ.getInstance().addProducto(producto,user);
                     int total = PedidoServ.getInstance().getTotalProductosenCarrito(user);
                     ctx.sessionAttribute("tc",total); // total en carrito
-                    System.out.println(total+" "+ctx.sessionAttribute("totalencarro"));
                     ctx.redirect("/");
+                });
+                get("/remove/{id}", ctx -> {
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    PedidoServ.getInstance().removeProducto(producto,user);
+                    ctx.redirect("/mi-carrito");
                 });
 
             });
