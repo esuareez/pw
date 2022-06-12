@@ -129,9 +129,13 @@ public class PedidoServ {
                 pedido = item;
             }
         }
+        if(pedido == null)
+            return total;
+
         ProductoPedido pp = getProductoPedidoporPedido(pedido);
-        if(pp == null || pedido == null)
-            return 0;
+        if(pp == null)
+            return total;
+
         for(var item : getProductoPedidoList()){
             if(item.getPedido().getId() == pp.getPedido().getId()){
                 total+=item.getCantidad();

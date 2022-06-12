@@ -28,20 +28,24 @@ public class PedidoController extends BaseController {
                 Map<String,Object> modelo = new HashMap<>();
                 before(ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
-                    if(user == null)
-                    {
+                    if(user != null){
+                        int total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
+                        ctx.sessionAttribute("tc",total);
+                        modelo.put("isLogin",1);
+                        modelo.put("usuario",user.getNombre());
+                        if(user.getRol().equalsIgnoreCase("cliente")){
+                            modelo.put("rol","cliente");
+                        }else{
+                            if(user.getRol().equalsIgnoreCase("admin")){
+                                modelo.put("rol","admin");
+                            }
+                        }
+                    }else{
+                        modelo.put("isLogin",0);
                         ctx.redirect("/login");
                     }
-                    if(user.getRol().equalsIgnoreCase("cliente")){
-                        modelo.put("rol","cliente");
-                    }else{
-                        if(user.getRol().equalsIgnoreCase("admin")){
-                            modelo.put("rol","admin");
-                        }
-                    }
-                    int total = PedidoServ.getInstance().getTotalProductosenCarrito(user);
-                    ctx.sessionAttribute("tc",total);
                 });
+
                 get("/mi-carrito", ctx -> {
                     double ptotal = 0;
                     Usuario user = ctx.sessionAttribute("usuario");

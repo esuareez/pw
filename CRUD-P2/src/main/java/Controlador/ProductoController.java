@@ -1,21 +1,17 @@
 package Controlador;
 
 import Modelos.Producto;
-import Modelos.ProductoPedido;
 import Modelos.Usuario;
 import Servicios.PedidoServ;
 import Servicios.ProductoServ;
-import Servicios.UsuarioServ;
 import Util.BaseController;
 import io.javalin.Javalin;
-import ognl.ObjectElementsAccessor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
-import static io.javalin.apibuilder.ApiBuilder.get;
 
 public class ProductoController extends BaseController {
 
@@ -31,6 +27,7 @@ public class ProductoController extends BaseController {
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
                         total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
+                        ctx.sessionAttribute("tc",total);
                         modelo.put("isLogin",1);
                         modelo.put("usuario",user.getNombre());
                         if(user.getRol().equalsIgnoreCase("cliente")){
@@ -56,6 +53,7 @@ public class ProductoController extends BaseController {
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
                         total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
+                        ctx.sessionAttribute("tc",total);
                         modelo.put("isLogin",1);
                         modelo.put("usuario",user.getNombre());
                         if(user.getRol().equalsIgnoreCase("cliente")){
@@ -92,7 +90,7 @@ public class ProductoController extends BaseController {
                 get("/producto/editar/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
                     if(producto == null)
-                        ctx.redirect("/inventario");
+                        ctx.redirect("/admin/inventario");
                     modelo.put("producto",producto);
                     ctx.render("publico/Templates/Productos/editarProducto.html",modelo);
                 });
@@ -105,14 +103,14 @@ public class ProductoController extends BaseController {
                     int estado = Integer.parseInt(ctx.formParam("estado"));
                     Producto producto = new Producto(id,nombre,cantidad,precio,descripcion,estado);
                     ProductoServ.getInstance().editarProducto(producto);
-                    ctx.redirect("/inventario");
+                    ctx.redirect("/admin/inventario");
                 });
                 get("/producto/eliminar/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
                     if(producto == null)
-                        ctx.redirect("/inventario");
+                        ctx.redirect("/admin/inventario");
                     ProductoServ.getInstance().deleteProducto(producto);
-                    ctx.render("/inventario",modelo);
+                    ctx.redirect("/admin/inventario");
                 });
             });
         });

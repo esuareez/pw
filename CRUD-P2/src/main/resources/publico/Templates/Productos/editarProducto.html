@@ -39,18 +39,34 @@
 
                     <li class="sidebar-title">Usuario</li>
                     <li class="sidebar-item  has-sub">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-person"></i>
-                            <span>Usuario</span>
-                        </a>
-                        <ul class="submenu ">
-                            <li class="submenu-item ">
-                                <a th:href="@{/login}">Iniciar sesion</a>
-                            </li>
-                            <li class="submenu-item">
-                                <a th:href="@{/signup}">Crear cuenta</a>
-                            </li>
-                        </ul>
+                        <span th:switch="${isLogin}">
+                            <span th:case="0">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-person"></i>
+                                    <span>Usuario</span>
+                                </a>
+                                <ul class="submenu ">
+                                    <li class="submenu-item ">
+                                        <a th:href="@{/login}">Iniciar sesion</a>
+                                    </li>
+                                    <li class="submenu-item">
+                                        <a th:href="@{/signup}">Crear cuenta</a>
+                                    </li>
+                                </ul>
+                            </span>
+
+                            <span th:case="1">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-person"></i>
+                                    <span th:text="${usuario}"></span>
+                                </a>
+                                <ul class="submenu ">
+                                    <li class="submenu-item ">
+                                        <a th:href="@{/logout}">Cerrar sesion</a>
+                                    </li>
+                                </ul>
+                            </span>
+                        </span>
 
                     <li class="sidebar-title">Menu</li>
 
@@ -130,7 +146,7 @@
                                     <div class="card-header">
                                         <h4 class="card-title">Datos del producto</h4>
                                     </div>
-                                    <form class="form form-center" method="POST" action="/editarProducto">
+                                    <form class="form form-center" method="POST" action="/admin/editarProducto">
                                         <div class="card-body">
                                             <div class="form-body ">
                                                 <div class="row ">
