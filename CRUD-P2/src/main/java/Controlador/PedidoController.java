@@ -56,7 +56,6 @@ public class PedidoController extends BaseController {
                         }
                     }
                 });
-
                 get("/add/{id}",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
@@ -69,7 +68,9 @@ public class PedidoController extends BaseController {
                     Usuario user = ctx.sessionAttribute("usuario");
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
                     PedidoServ.getInstance().removeProducto(producto,user);
-                    ctx.redirect("/mi-carrito");
+                    int total = PedidoServ.getInstance().getTotalProductosenCarrito(user);
+                    ctx.sessionAttribute("tc",total);
+                    ctx.redirect("/user/mi-carrito");
                 });
 
             });

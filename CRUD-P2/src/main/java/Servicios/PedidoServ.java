@@ -115,6 +115,7 @@ public class PedidoServ {
            for(var item : getProductoPedidoList()){
                if(item.getPedido().getId() == pedido.getId() && item.getProducto().getId() == producto.getId()){
                    productoPedidoList.remove(item);
+                   break;
                }
            }
         }
