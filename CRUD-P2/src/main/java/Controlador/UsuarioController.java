@@ -30,7 +30,7 @@ public class UsuarioController extends BaseController {
                         ctx.redirect("/");
                     }else{
                         if(user.getRol().equalsIgnoreCase("admin")){
-                            ctx.redirect("/inventario");
+                            ctx.redirect("/admin/inventario");
                         }
                     }
                 }
