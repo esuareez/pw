@@ -28,7 +28,11 @@ public class PedidoController extends BaseController {
                 Map<String,Object> modelo = new HashMap<>();
                 before(ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
-                    if(user == null || user.getRol().equalsIgnoreCase("cliente")){
+                    if(user == null)
+                    {
+                        ctx.redirect("/login");
+                    }
+                    if(user.getRol().equalsIgnoreCase("cliente")){
                         modelo.put("rol","cliente");
                     }else{
                         if(user.getRol().equalsIgnoreCase("admin")){
