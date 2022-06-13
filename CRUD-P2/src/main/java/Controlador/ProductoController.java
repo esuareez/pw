@@ -70,12 +70,14 @@ public class ProductoController extends BaseController {
                             }
                         }
                     }else{
+                        total = 0;
                         modelo.put("isLogin",0);
                         ctx.redirect("/login");
                     }
                 });
                 get("/crearProducto",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
+                    modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/crearProducto.html",modelo);
                 });
                 post("/crearProducto", ctx -> {
@@ -91,6 +93,7 @@ public class ProductoController extends BaseController {
                 get("/inventario",ctx -> {
                     List<Producto> productoList = ProductoServ.getInstance().getProductoList();
                     modelo.put("productos",productoList);
+                    modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/Inventario.html", modelo);
                 });
                 get("/producto/editar/{id}",ctx -> {
@@ -98,6 +101,7 @@ public class ProductoController extends BaseController {
                     if(producto == null)
                         ctx.redirect("/admin/inventario");
                     modelo.put("producto",producto);
+                    modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/editarProducto.html",modelo);
                 });
                 post("/editarProducto",ctx -> {
@@ -122,6 +126,7 @@ public class ProductoController extends BaseController {
                 get("/pedidos",ctx ->{
                     List<Pedido> pedidoList = PedidoServ.getInstance().getPedidoList();
                     modelo.put("pedidos",pedidoList);
+                    modelo.put("carrito",total);
                     ctx.render("publico/Templates/Pedidos/Historial.html",modelo);
                 });
 
@@ -129,6 +134,7 @@ public class ProductoController extends BaseController {
                     Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
                     List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(pedido.getUsuario());
                     modelo.put("productos",pp);
+                    modelo.put("carrito",total);
                     ctx.render("publico/Templates/Pedidos/DetallesProducto.html",modelo);
                 });
             });

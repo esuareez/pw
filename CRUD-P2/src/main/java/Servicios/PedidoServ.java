@@ -116,15 +116,13 @@ public class PedidoServ {
             pedido = new Pedido(usuario);
             crearPedido(pedido);
         }
-        ProductoPedido pp = getProductoPedidoporPedido(pedido);
-        if(pp == null || getProductoPedidoporProducto(pp.getProducto()) == null){
+        ProductoPedido pp = getProductoPedidoporProducto(producto);
+        if(pp == null){
             pp = new ProductoPedido(pedido,producto,1);
             productoPedidoList.add(pp);
         }else{
-            for(var item : getProductoPedidoList()){
-                if(pp.getProducto().getCantidad() > pp.getCantidad() && pp.getProducto().getId() == item.getProducto().getId())
-                    pp.setCantidad(pp.getCantidad()+1);
-            }
+            if(pp.getProducto().getCantidad() > pp.getCantidad() && pp.getProducto().getId() == producto.getId())
+                pp.setCantidad(pp.getCantidad()+1);
         }
         return pp;
     }
