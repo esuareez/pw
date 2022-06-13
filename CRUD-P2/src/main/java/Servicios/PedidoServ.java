@@ -117,7 +117,7 @@ public class PedidoServ {
             crearPedido(pedido);
         }
         ProductoPedido pp = getProductoPedidoporProducto(producto);
-        if(pp == null){
+        if(pp == null || pp.getPedido().getEstado() == 2){
             pp = new ProductoPedido(pedido,producto,1);
             productoPedidoList.add(pp);
         }else{
