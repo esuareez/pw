@@ -16,7 +16,6 @@ import java.util.List;
 public class PedidoServ {
     private static PedidoServ instancia;
     private List<Pedido> pedidoList = new ArrayList<>();
-    private List<ProductoPedido> productoPedidoList = new ArrayList<>();
 
     public static PedidoServ getInstance(){
         if(instancia==null){
@@ -88,31 +87,6 @@ public class PedidoServ {
 
      */
 
-    public ProductoPedido getProductoPedidoporProducto(Producto producto){
-        return productoPedidoList.stream().filter(e -> e.getProducto().getId() == producto.getId()).findFirst().orElse(null);
-    }
-    /*public ProductoPedido getProductoPedidoporPedido(Pedido pedido){
-        return productoPedidoList.stream().filter(e -> e.getPedido().getId() == pedido.getId()).findFirst().orElse(null);
-    }*/
-    public List<ProductoPedido> getProductoPedidoList() {
-        return productoPedidoList;
-    }
-
-   /* public List<ProductoPedido> getProductosPedido(Usuario usuario){
-        List<ProductoPedido> lista = new ArrayList<>();
-        Pedido pedido = getPedidoporUsuario(usuario);
-        if(pedido == null)
-            return null;
-        for(var item : productoPedidoList){
-            if(item.getPedido().getId() == pedido.getId() && item.getPedido().getEstado() == 1){
-                lista.add(item);
-            }
-        }
-        return lista;
-    }*/
-
-
-
     public void addProducto(Producto producto, Usuario usuario) {
         Pedido pedido = getPedidoCarroporUsuario(usuario);
         if (pedido == null) {
@@ -135,14 +109,14 @@ public class PedidoServ {
             }
         }
     }
-    
+
     public void removeProducto(Producto producto, Usuario usuario){
         Pedido pedido = getPedidoCarroporUsuario(usuario);
         if(pedido != null)
         {
            for(var item : pedido.getProductoPedido()){
                if(item.getProducto().getId() == producto.getId()){
-                   productoPedidoList.remove(item);
+                   pedido.getProductoPedido().remove(item);
                    break;
                }
            }
