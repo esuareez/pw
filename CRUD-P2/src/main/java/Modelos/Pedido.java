@@ -18,14 +18,6 @@ public class Pedido {
     public Pedido() {
     }
 
-    /*public Pedido(Usuario usuario) {
-        this.fecha = Date.from(Instant.now());
-        this.estado = 1;
-        this.total = 0;
-        this.usuario = usuario;
-
-    }*/
-
     public Pedido(Usuario usuario, List<ProductoPedido> productoPedido) {
         this.usuario = usuario;
         this.productoPedido = productoPedido;
@@ -34,17 +26,6 @@ public class Pedido {
         this.total = 0;
 
     }
-
-    public Pedido(int id, Usuario usuario){
-        this.id = id;
-        this.fecha = Date.from(Instant.now());
-        this.estado = 1;
-        this.total = 0;
-        this.usuario = usuario;
-    }
-
-
-
     public int getId() {
         return id;
     }

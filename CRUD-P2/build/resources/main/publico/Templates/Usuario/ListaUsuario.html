@@ -77,7 +77,7 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item ">
                         <a th:href="@{/user/mi-carrito}" class='sidebar-link'>
                             <i class="bi bi-cart4"></i>
                             <span>Carrito</span>
@@ -100,13 +100,13 @@
                                 </li>
                             </ul>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item ">
                             <a th:href="@{/admin/pedidos}" class='sidebar-link'>
                                 <i class="bi bi-card-checklist"></i>
                                 <span>Historial de Pedidos</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a th:href="@{/admin/lista-usuarios}" class='sidebar-link'>
                                 <i class="bi bi-person-lines-fill"></i>
                                 <span>Listado de usuarios</span>
@@ -132,51 +132,38 @@
         </header>
 
         <div class="page-heading">
-            <h3>Mi carrito</h3>
+            <h3>Listado de usuarios</h3>
         </div>
         <div class="page-content">
-            <span th:switch="${isEmpty}">
-                <span th:case="1">
-                    <section class="section">
-                        <div class="card">
-                            <div class="card-header">
-                                Productos agregados
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped" id="table1">
-                                    <thead>
-                                    <tr>
-                                        <th> </th>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Cantidad</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="item : ${carrito}">
-                                        <td>
-                                            <a class="btn btn-danger" th:href="'/user/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
-                                        </td>
-                                        <td th:text="${item.getProducto.getNombre}"></td>
-                                        <td th:text="${item.getProducto.getPrecio}"></td>
-                                        <td th:text="${item.cantidad}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        Usuarios registrados
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="table1">
+                            <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Rol</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${usuarios}">
+                                <td th:text="${item.getUser}"></td>
+                                <td th:text="${item.getNombre}"></td>
+                                <td th:text="${item.getRol}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                            <div class="card-header d-flex justify-content-end">
-                                 <a class="btn btn-success" th:href="'/user/procesar/'+${pedido}"><i class="fa-solid fa-trash-can"></i>Procesar compra</a>
-                                <b>Total:</b>&nbsp; RD$<p th:text="${total}"></p>
-                            </div>
-                        </div>
-                    </section>
-                </span>
-                <span th:case="0">
-                    <p> El carrito esta <b>vacio</b>.</p>
-                </span>
-
-            </span>
+                    <div class="card-header d-flex justify-content-end">
+                        <a class="btn btn-success" th:href="@{/admin/}">Volver</a>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <footer>
