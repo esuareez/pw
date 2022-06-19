@@ -132,7 +132,7 @@ public class ProductoController extends BaseController {
 
                 get("/pedido/{id}", ctx -> {
                     Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
-                    List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(pedido.getUsuario());
+                    List<ProductoPedido> pp = pedido.getProductoPedido();
                     modelo.put("productos",pp);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Pedidos/DetallesProducto.html",modelo);
