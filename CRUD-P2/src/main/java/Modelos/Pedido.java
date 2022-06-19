@@ -13,16 +13,25 @@ public class Pedido {
     private int estado;
     private double total;
     private Usuario usuario;
+    private List<ProductoPedido> productoPedido;
 
     public Pedido() {
     }
 
-    public Pedido(Usuario usuario) {
-        //this.id = PedidoServ.getInstance().makeId();
+    /*public Pedido(Usuario usuario) {
         this.fecha = Date.from(Instant.now());
         this.estado = 1;
         this.total = 0;
         this.usuario = usuario;
+
+    }*/
+
+    public Pedido(Usuario usuario, List<ProductoPedido> productoPedido) {
+        this.usuario = usuario;
+        this.productoPedido = productoPedido;
+        this.fecha = Date.from(Instant.now());
+        this.estado = 1;
+        this.total = 0;
 
     }
 
@@ -33,6 +42,8 @@ public class Pedido {
         this.total = 0;
         this.usuario = usuario;
     }
+
+
 
     public int getId() {
         return id;
@@ -72,5 +83,12 @@ public class Pedido {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public List<ProductoPedido> getProductoPedido() {
+        return productoPedido;
+    }
+    public void setProductoPedido(List<ProductoPedido> productoPedido) {
+        this.productoPedido = productoPedido;
     }
 }
