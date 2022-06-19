@@ -16,7 +16,6 @@ import java.util.List;
 public class PedidoServ {
     private static PedidoServ instancia;
     private List<Pedido> pedidoList = new ArrayList<>();
-    private List<ProductoPedido> productoPedidoList = new ArrayList<>();
 
     public static PedidoServ getInstance(){
         if(instancia==null){
@@ -34,6 +33,10 @@ public class PedidoServ {
 
     public Pedido getPedidoporUsuario(Usuario usuario){
         return pedidoList.stream().filter(e -> e.getUsuario().getId() == usuario.getId()).findFirst().orElse(null);
+    }
+
+    public Pedido getPedidoCarroporUsuario(Usuario usuario){
+        return pedidoList.stream().filter(e -> e.getUsuario().getId() == usuario.getId() && e.getEstado() == 1).findFirst().orElse(null);
     }
     /*
     Pedido
@@ -67,11 +70,9 @@ public class PedidoServ {
             return null;
         }
         pedido.setEstado(2);
-        for( var item : getProductoPedidoList()){
-            if(item.getPedido().getId() == pedido.getId()){
-                total += (item.getProducto().getPrecio() * item.getCantidad());
-                item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
-            }
+        for( var item : pedido.getProductoPedido()){
+            total += (item.getProducto().getPrecio() * item.getCantidad());
+            item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
         }
         pedido.setTotal(total);
         return pedido;
@@ -86,54 +87,36 @@ public class PedidoServ {
 
      */
 
-    public ProductoPedido getProductoPedidoporProducto(Producto producto){
-        return productoPedidoList.stream().filter(e -> e.getProducto().getId() == producto.getId()).findFirst().orElse(null);
-    }
-    public ProductoPedido getProductoPedidoporPedido(Pedido pedido){
-        return productoPedidoList.stream().filter(e -> e.getPedido().getId() == pedido.getId()).findFirst().orElse(null);
-    }
-    public List<ProductoPedido> getProductoPedidoList() {
-        return productoPedidoList;
-    }
-
-    public List<ProductoPedido> getProductosPedido(Usuario usuario){
-        List<ProductoPedido> lista = new ArrayList<>();
-        Pedido pedido = getPedidoporUsuario(usuario);
-        if(pedido == null)
-            return null;
-        for(var item : productoPedidoList){
-            if(item.getPedido().getId() == pedido.getId() && item.getPedido().getEstado() == 1){
-                lista.add(item);
+    public void addProducto(Producto producto, Usuario usuario) {
+        Pedido pedido = getPedidoCarroporUsuario(usuario);
+        if (pedido == null) {
+            List<ProductoPedido> productos = new ArrayList<>();
+            ProductoPedido product = new ProductoPedido(producto, 1);
+            productos.add(product);
+            Pedido p = new Pedido(usuario, productos);
+            crearPedido(p);
+        } else {
+            boolean tieneProducto = false;
+            for(var product : pedido.getProductoPedido()){
+                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad()){
+                    product.setCantidad(product.getCantidad()+1);
+                    tieneProducto = true;
+                }
+            }
+            if(tieneProducto == false){
+                ProductoPedido pp = new ProductoPedido(producto,1);
+                pedido.getProductoPedido().add(pp);
             }
         }
-        return lista;
-    }
-
-    public ProductoPedido addProducto(Producto producto, Usuario usuario){
-        Pedido pedido = getPedidoporUsuario(usuario);
-        if(pedido == null || pedido.getEstado() == 2)
-        {
-            pedido = new Pedido(usuario);
-            crearPedido(pedido);
-        }
-        ProductoPedido pp = getProductoPedidoporProducto(producto);
-        if(pp == null || pp.getPedido().getEstado() == 2){
-            pp = new ProductoPedido(pedido,producto,1);
-            productoPedidoList.add(pp);
-        }else{
-            if(pp.getProducto().getCantidad() > pp.getCantidad() && pp.getProducto().getId() == producto.getId())
-                pp.setCantidad(pp.getCantidad()+1);
-        }
-        return pp;
     }
 
     public void removeProducto(Producto producto, Usuario usuario){
-        Pedido pedido = getPedidoporUsuario(usuario);
-        if(pedido != null && pedido.getEstado() == 1)
+        Pedido pedido = getPedidoCarroporUsuario(usuario);
+        if(pedido != null)
         {
-           for(var item : getProductoPedidoList()){
-               if(item.getPedido().getId() == pedido.getId() && item.getProducto().getId() == producto.getId()){
-                   productoPedidoList.remove(item);
+           for(var item : pedido.getProductoPedido()){
+               if(item.getProducto().getId() == producto.getId()){
+                   pedido.getProductoPedido().remove(item);
                    break;
                }
            }
@@ -142,23 +125,15 @@ public class PedidoServ {
 
     public int getTotalProductosenCarrito(Usuario usuario){
         int total = 0;
-        Pedido pedido = null;
-        for(var item : getPedidoList()) {
-            if(item.getUsuario().getId() == usuario.getId() && item.getEstado() == 1){
-                pedido = item;
-            }
-        }
+        Pedido pedido = getPedidoCarroporUsuario(usuario);
         if(pedido == null)
             return total;
 
-        ProductoPedido pp = getProductoPedidoporPedido(pedido);
-        if(pp == null)
+        if(pedido.getProductoPedido().size() == 0)
             return total;
 
-        for(var item : getProductoPedidoList()){
-            if(item.getPedido().getId() == pp.getPedido().getId()){
-                total+=item.getCantidad();
-            }
+        for(var item : pedido.getProductoPedido()){
+                total += item.getCantidad();
         }
         return total;
     }

@@ -7,6 +7,8 @@ import Modelos.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 public class UsuarioServ {
 
     private static UsuarioServ instancia;
@@ -38,16 +40,15 @@ public class UsuarioServ {
         return usuarioList.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
     }
 
-    public Usuario crearUsuario(Usuario usuario){
+    public void crearUsuario(Usuario usuario){
         if(getUsuarioporUsuario(usuario.getUser()) != null)
-            return null;
+            exit(-1);
         usuario.setId(makeId());
         usuarioList.add(usuario);
         for(var item : usuarioList)
         {
             System.out.println(item.getNombre()+" "+item.getRol());
         }
-        return usuario;
     }
 
     public int makeId(){

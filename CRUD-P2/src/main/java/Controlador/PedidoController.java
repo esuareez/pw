@@ -54,21 +54,26 @@ public class PedidoController extends BaseController {
                     {
                         ctx.redirect("/");
                     }else{
-                        List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(user);
-                        int id = 0;
-                        if(pp == null){
+                        Pedido pedido = PedidoServ.getInstance().getPedidoCarroporUsuario(user);
+                        if(pedido == null){
                             modelo.put("isEmpty",0);
                             ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }else{
-                            for( var item : pp){
-                                ptotal += (item.getProducto().getPrecio() * item.getCantidad());
-                                id = item.getPedido().getId();
+                            List<ProductoPedido> pp = pedido.getProductoPedido();
+                            int id = 0;
+                            if(pedido != null){
+                                for( var item : pp){
+                                        ptotal += (item.getProducto().getPrecio() * item.getCantidad());
+                                }
+                                modelo.put("isEmpty",1);
+                                modelo.put("total",ptotal);
+                                modelo.put("carrito",pp);
+                                modelo.put("pedido",pedido.getId());
+                                ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
+                            }else{
+                                modelo.put("isEmpty",0);
+                                ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                             }
-                            modelo.put("total",ptotal);
-                            modelo.put("carrito",pp);
-                            modelo.put("isEmpty",1);
-                            modelo.put("pedido",id);
-                            ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }
                     }
                 });

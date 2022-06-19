@@ -6,6 +6,7 @@ import Modelos.ProductoPedido;
 import Modelos.Usuario;
 import Servicios.PedidoServ;
 import Servicios.ProductoServ;
+import Servicios.UsuarioServ;
 import Util.BaseController;
 import io.javalin.Javalin;
 
@@ -132,10 +133,16 @@ public class ProductoController extends BaseController {
 
                 get("/pedido/{id}", ctx -> {
                     Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
-                    List<ProductoPedido> pp = PedidoServ.getInstance().getProductosPedido(pedido.getUsuario());
+                    List<ProductoPedido> pp = pedido.getProductoPedido();
                     modelo.put("productos",pp);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Pedidos/DetallesProducto.html",modelo);
+                });
+
+                get("/lista-usuarios",ctx -> {
+                    List<Usuario> usuarios = UsuarioServ.getInstance().getUsuarioList();
+                    modelo.put("usuarios",usuarios);
+                    ctx.render("publico/Templates/Usuario/ListaUsuario.html",modelo);
                 });
             });
         });
