@@ -60,15 +60,22 @@ public class PedidoController extends BaseController {
                             modelo.put("isEmpty",0);
                             ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }else{
-                            for( var item : pp){
-                                ptotal += (item.getProducto().getPrecio() * item.getCantidad());
-                                id = item.getPedido().getId();
+                            if(pp.stream().filter(e -> e.getPedido().getEstado() == 1).findAny().isPresent()){
+                                for( var item : pp){
+                                    if(item.getPedido().getEstado() == 1){
+                                        ptotal += (item.getProducto().getPrecio() * item.getCantidad());
+                                        id = item.getPedido().getId();
+                                    }
+                                }
+                                modelo.put("isEmpty",1);
+                                modelo.put("total",ptotal);
+                                modelo.put("carrito",pp);
+                                modelo.put("pedido",id);
+                                ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
+                            }else{
+                                modelo.put("isEmpty",0);
+                                ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                             }
-                            modelo.put("total",ptotal);
-                            modelo.put("carrito",pp);
-                            modelo.put("isEmpty",1);
-                            modelo.put("pedido",id);
-                            ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }
                     }
                 });

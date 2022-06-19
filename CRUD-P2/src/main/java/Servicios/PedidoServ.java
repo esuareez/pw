@@ -110,7 +110,37 @@ public class PedidoServ {
     }
 
     public ProductoPedido addProducto(Producto producto, Usuario usuario){
-        Pedido pedido = getPedidoporUsuario(usuario);
+        ProductoPedido pp = null;
+        boolean existe = false;
+        for(var user_pedido : pedidoList){
+            if(user_pedido.getUsuario().getId() == usuario.getId()){
+                if(user_pedido.getEstado() == 1) {
+                    pp = getProductoPedidoporProducto(producto);
+                    if (pp == null) {
+                        pp = new ProductoPedido(user_pedido, producto, 1);
+                        productoPedidoList.add(pp);
+                    } else {
+                        pp.setCantidad(pp.getCantidad() + 1);
+                    }
+                    existe = true;
+                }else{
+                    if(user_pedido.getEstado() == 2){
+                        Pedido pedido = new Pedido(usuario);
+                        crearPedido(pedido);
+                        pp = new ProductoPedido(pedido,producto,1);
+                        productoPedidoList.add(pp);
+                    }
+                }
+            }
+        }
+        if(!existe){
+            Pedido pedido = new Pedido(usuario);
+            crearPedido(pedido);
+            pp = new ProductoPedido(pedido,producto,1);
+            productoPedidoList.add(pp);
+        }
+
+        /*Pedido pedido = getPedidoporUsuario(usuario);
         if(pedido == null || pedido.getEstado() == 2)
         {
             pedido = new Pedido(usuario);
@@ -123,7 +153,7 @@ public class PedidoServ {
         }else{
             if(pp.getProducto().getCantidad() > pp.getCantidad() && pp.getProducto().getId() == producto.getId())
                 pp.setCantidad(pp.getCantidad()+1);
-        }
+        }*/
         return pp;
     }
 
