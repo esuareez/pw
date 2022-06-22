@@ -18,7 +18,7 @@ public class Main {
             //config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
             //config.enableCorsForAllOrigins();
         });
-        app.start(8000);
+        app.start(7000);
 
         new ProductoController(app).aplicarRutas();
         new UsuarioController(app).aplicarRutas();
