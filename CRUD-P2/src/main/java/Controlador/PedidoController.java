@@ -81,9 +81,15 @@ public class PedidoController extends BaseController {
                     Usuario user = ctx.sessionAttribute("usuario");
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
                     int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
-                    System.out.println(cantidad);
                     PedidoServ.getInstance().addProducto(producto,user,cantidad);
                     ctx.redirect("/");
+                });
+                post("/edit/{id}",ctx -> {
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+                    PedidoServ.getInstance().editarCarro(producto,user,cantidad);
+                    ctx.redirect("/user/mi-carrito");
                 });
                 get("/remove/{id}", ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");

@@ -143,6 +143,7 @@
                                 Productos agregados
                             </div>
                             <div class="card-body">
+                                <form method="post" id="editcart"></form>
                                 <table class="table table-striped" id="table1">
                                     <thead>
                                     <tr>
@@ -150,6 +151,7 @@
                                         <th>Nombre</th>
                                         <th>Precio</th>
                                         <th>Cantidad</th>
+                                        <th> </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -159,15 +161,21 @@
                                         </td>
                                         <td th:text="${item.getProducto.getNombre}"></td>
                                         <td th:text="${item.getProducto.getPrecio}"></td>
-                                        <td th:text="${item.cantidad}"></td>
+                                        <td>
+                                            <input type="number" min="1" th:max="${item.getProducto.getCantidad}" th:value="${item.cantidad}" name="cantidad" form="editcart">
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-success" form="editcart" th:formaction="'/user/edit/'+${item.getProducto.getId}"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
 
                             <div class="card-header d-flex justify-content-end">
-                                 <a class="btn btn-success" th:href="'/user/procesar/'+${pedido}"><i class="fa-solid fa-trash-can"></i>Procesar compra</a>
+                                 <a class="btn btn-success" th:href="'/user/procesar/'+${pedido}"><i class="fa-solid fa-check"></i>Procesar compra</a>
                                 <b>Total:</b>&nbsp; RD$<p th:text="${total}"></p>
+
                             </div>
                         </div>
                     </section>

@@ -98,14 +98,24 @@ public class PedidoServ {
         } else {
             boolean tieneProducto = false;
             for(var product : pedido.getProductoPedido()){
-                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad() && product.getCantidad()+cantidad <= product.getProducto().getCantidad()){
-                    product.setCantidad(product.getCantidad()+cantidad);
+                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad()){
+                    if(product.getCantidad()+cantidad <= product.getProducto().getCantidad())
+                        product.setCantidad(product.getCantidad()+cantidad);
                     tieneProducto = true;
                 }
             }
             if(tieneProducto == false){
-                ProductoPedido pp = new ProductoPedido(producto,1);
+                ProductoPedido pp = new ProductoPedido(producto,cantidad);
                 pedido.getProductoPedido().add(pp);
+            }
+        }
+    }
+
+    public void editarCarro(Producto producto, Usuario usuario, int cantidad){
+        Pedido pedido = getPedidoCarroporUsuario(usuario);
+        for(var product : pedido.getProductoPedido()){
+            if(product.getProducto().getId() == producto.getId()){
+                product.setCantidad(cantidad);
             }
         }
     }
