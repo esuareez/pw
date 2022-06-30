@@ -87,19 +87,19 @@ public class PedidoServ {
 
      */
 
-    public void addProducto(Producto producto, Usuario usuario) {
+    public void addProducto(Producto producto, Usuario usuario, int cantidad) {
         Pedido pedido = getPedidoCarroporUsuario(usuario);
         if (pedido == null) {
             List<ProductoPedido> productos = new ArrayList<>();
-            ProductoPedido product = new ProductoPedido(producto, 1);
+            ProductoPedido product = new ProductoPedido(producto, cantidad);
             productos.add(product);
             Pedido p = new Pedido(usuario, productos);
             crearPedido(p);
         } else {
             boolean tieneProducto = false;
             for(var product : pedido.getProductoPedido()){
-                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad()){
-                    product.setCantidad(product.getCantidad()+1);
+                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad() && product.getCantidad()+cantidad <= product.getProducto().getCantidad()){
+                    product.setCantidad(product.getCantidad()+cantidad);
                     tieneProducto = true;
                 }
             }

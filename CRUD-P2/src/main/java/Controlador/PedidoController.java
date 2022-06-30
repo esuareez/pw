@@ -77,10 +77,12 @@ public class PedidoController extends BaseController {
                         }
                     }
                 });
-                get("/add/{id}",ctx -> {
+                post("/add/{id}",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
                     Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
-                    PedidoServ.getInstance().addProducto(producto,user);
+                    int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+                    System.out.println(cantidad);
+                    PedidoServ.getInstance().addProducto(producto,user,cantidad);
                     ctx.redirect("/");
                 });
                 get("/remove/{id}", ctx -> {
