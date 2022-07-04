@@ -1,7 +1,15 @@
 package Modelos;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class ProductoPedido {
 
+    @Id
+    @GeneratedValue
+    private int id;
     private Pedido pedido;
     private Producto producto;
     private int cantidad;

@@ -59,7 +59,8 @@ public class PedidoController extends BaseController {
                             modelo.put("isEmpty",0);
                             ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }else{
-                            List<ProductoPedido> pp = pedido.getProductoPedido();
+                            //List<ProductoPedido> pp = pedido.getProductoPedido();
+                            List<ProductoPedido> pp = null;
                             int id = 0;
                             if(pedido != null){
                                 for( var item : pp){

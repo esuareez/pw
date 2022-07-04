@@ -1,22 +1,19 @@
 package Servicios;
 
 import Modelos.Producto;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductoServ {
+public class ProductoServ extends GestionDb<Producto> {
     private static ProductoServ instancia;
 
     private List<Producto> productoList = new ArrayList<>();
 
-    private Producto product = new Producto("Peptobismol",20,250,"Sirve para el dolor de estómago.",1);
-    private Producto product1 = new Producto("Winasorb",0,25,"Dolor de cabeza.",1);
-
-    public ProductoServ(){
-        crearProducto(product);
-        deleteProducto(product);
-        crearProducto(product1);
+    public ProductoServ() {
+        super(Producto.class);
     }
 
     public static ProductoServ getInstance(){
@@ -27,10 +24,17 @@ public class ProductoServ {
     }
 
     public List<Producto> getProductoList(){
-        return productoList;
+        EntityManager em = getEntityManager();
+        Query query = em.createQuery("select * from producto",Producto.class);
+        List<Producto> listaProducto = query.getResultList();
+        return listaProducto;
     }
 
     public Producto getProductoporNombre(String nombre){
+        EntityManager em = getEntityManager();
+        Query query = em.createQuery("select e from Producto where e.nombre like :nombre");
+        List<Producto> listaProducto = query.getResultList();
+
         return productoList.stream().filter(e -> e.getNombre().equalsIgnoreCase(nombre)).findFirst().orElse(null);
     }
 

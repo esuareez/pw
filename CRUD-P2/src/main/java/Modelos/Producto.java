@@ -1,9 +1,18 @@
 package Modelos;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+
+import java.io.Serializable;
 import java.util.random.RandomGenerator;
 
+@Entity
 public class Producto {
-
+    @Id
+    @GeneratedValue
     private int id;
     private String nombre;
     private double precio;
