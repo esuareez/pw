@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.random.RandomGenerator;
 
 @Entity
+@Table(name="miproducto")
 public class Producto {
     @Id
     @GeneratedValue

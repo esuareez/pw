@@ -1,16 +1,18 @@
 package Modelos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.persister.collection.OneToManyPersister;
 
 @Entity
+@Table(name="miproductopedido")
 public class ProductoPedido {
 
     @Id
     @GeneratedValue
     private int id;
+    @OneToOne
     private Pedido pedido;
+    @OneToOne
     private Producto producto;
     private int cantidad;
 

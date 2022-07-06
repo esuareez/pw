@@ -20,7 +20,7 @@ public class GestionDb<T> {
 
     public GestionDb(Class<T> claseEntidad) {
         if(emf == null) {
-            emf = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
+            emf = Persistence.createEntityManagerFactory("Persistencia");
         }
         this.claseEntidad = claseEntidad;
 

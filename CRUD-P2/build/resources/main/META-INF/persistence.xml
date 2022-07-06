@@ -7,7 +7,7 @@
     <class>Modelos.ProductoPedido</class>
     <class>Modelos.Usuario</class>
     <properties>
-        <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/shop" />
+        <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/tiendita" />
         <property name="jakarta.persistence.jdbc.driver" value= "org.h2.Driver"/>
         <property name="jakarta.persistence.jdbc.user" value="sa" />
         <property name="jakarta.persistence.jdbc.password" value="" />
