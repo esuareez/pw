@@ -5,6 +5,9 @@ import Controlador.ProductoController;
 import Controlador.UsuarioController;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
+import org.h2.tools.Server;
+
+import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,5 +27,24 @@ public class Main {
         new UsuarioController(app).aplicarRutas();
         new PedidoController(app).aplicarRutas();
 
+
+        try {
+            //Modo servidor H2.
+            Server.createTcpServer("-tcpPort",
+                    "9092",
+                    "-tcpAllowOthers",
+                    "-tcpDaemon",
+                    "-ifNotExists").start();
+            //Abriendo el cliente web. El valor 0 representa puerto aleatorio.
+            String status = Server.createWebServer("-trace", "-webPort", "0").start().getStatus();
+            //
+            System.out.println("Status Web: "+status);
+        }catch (SQLException ex){
+            System.out.println("Problema con la base de datos: "+ex.getMessage());
+        }
+
+
+
     }
+
 }

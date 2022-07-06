@@ -141,6 +141,7 @@
                         Productos disponibles
                     </div>
                     <div class="card-body">
+                        <form method="post" id="addcart"></form>
                         <table class="table table-striped" id="table1">
                             <thead>
                             <tr>
@@ -148,6 +149,7 @@
                                 <th>Precio</th>
                                 <th>Disponibilidad</th>
                                 <th>Descripcion</th>
+                                <th>Cantidad</th>
                                 <th>Accion</th>
                             </tr>
                             </thead>
@@ -161,7 +163,10 @@
                                 <td th:text="${item.cantidad}"></td>
                                 <td th:text="${item.descripcion}"></td>
                                 <td>
-                                    <a class="btn btn-success" th:href="'/user/add/'+${item.id}" th:value="${item.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</a>
+                                    <input type="number" min="1" th:max="${item.cantidad}" value="1" name="cantidad" form="addcart">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-success" form="addcart" th:formaction="'/user/add/'+${item.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button>
                                 </td>
                             </tr>
                             </tbody>

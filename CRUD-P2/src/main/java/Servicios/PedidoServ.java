@@ -70,10 +70,10 @@ public class PedidoServ {
             return null;
         }
         pedido.setEstado(2);
-        for( var item : pedido.getProductoPedido()){
+        /*for( var item : pedido.getProductoPedido()){
             total += (item.getProducto().getPrecio() * item.getCantidad());
             item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
-        }
+        }*/
         pedido.setTotal(total);
         return pedido;
     }
@@ -87,31 +87,41 @@ public class PedidoServ {
 
      */
 
-    public void addProducto(Producto producto, Usuario usuario) {
+    public void addProducto(Producto producto, Usuario usuario, int cantidad) {
         Pedido pedido = getPedidoCarroporUsuario(usuario);
         if (pedido == null) {
             List<ProductoPedido> productos = new ArrayList<>();
-            ProductoPedido product = new ProductoPedido(producto, 1);
+            ProductoPedido product = new ProductoPedido(producto, cantidad);
             productos.add(product);
             Pedido p = new Pedido(usuario, productos);
             crearPedido(p);
         } else {
-            boolean tieneProducto = false;
+            /*boolean tieneProducto = false;
             for(var product : pedido.getProductoPedido()){
                 if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad()){
-                    product.setCantidad(product.getCantidad()+1);
+                    if(product.getCantidad()+cantidad <= product.getProducto().getCantidad())
+                        product.setCantidad(product.getCantidad()+cantidad);
                     tieneProducto = true;
                 }
             }
             if(tieneProducto == false){
-                ProductoPedido pp = new ProductoPedido(producto,1);
+                ProductoPedido pp = new ProductoPedido(producto,cantidad);
                 pedido.getProductoPedido().add(pp);
-            }
+            }*/
         }
     }
 
+    public void editarCarro(Producto producto, Usuario usuario, int cantidad){
+        /*Pedido pedido = getPedidoCarroporUsuario(usuario);
+        for(var product : pedido.getProductoPedido()){
+            if(product.getProducto().getId() == producto.getId()){
+                product.setCantidad(cantidad);
+            }
+        }*/
+    }
+
     public void removeProducto(Producto producto, Usuario usuario){
-        Pedido pedido = getPedidoCarroporUsuario(usuario);
+       /* Pedido pedido = getPedidoCarroporUsuario(usuario);
         if(pedido != null)
         {
            for(var item : pedido.getProductoPedido()){
@@ -120,12 +130,12 @@ public class PedidoServ {
                    break;
                }
            }
-        }
+        }*/
     }
 
     public int getTotalProductosenCarrito(Usuario usuario){
         int total = 0;
-        Pedido pedido = getPedidoCarroporUsuario(usuario);
+        /*Pedido pedido = getPedidoCarroporUsuario(usuario);
         if(pedido == null)
             return total;
 
@@ -134,7 +144,7 @@ public class PedidoServ {
 
         for(var item : pedido.getProductoPedido()){
                 total += item.getCantidad();
-        }
+        }*/
         return total;
     }
 
