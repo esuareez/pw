@@ -1,7 +1,5 @@
 package Servicios;
 
-import Modelos.Pedido;
-import Modelos.Producto;
 import Modelos.Usuario;
 
 import java.util.ArrayList;
@@ -9,17 +7,18 @@ import java.util.List;
 
 import static java.lang.System.exit;
 
-public class UsuarioServ {
+public class UsuarioServ extends GestionDb<Usuario> {
 
     private static UsuarioServ instancia;
     private List<Usuario> usuarioList = new ArrayList<>();
 
     // ADMIN
-    private Usuario admin = new Usuario(1,"admin","admin","admin","admin");
-    private Usuario user = new Usuario(2,"eliam","eliam","123","cliente");
-    public UsuarioServ(){
-        usuarioList.add(admin);
-        usuarioList.add(user);
+    // private Usuario admin = new Usuario(1,"admin","admin","admin","admin");
+    // private Usuario user = new Usuario(2,"eliam","eliam","123","cliente");
+    public UsuarioServ() {
+        super(Usuario.class);
+        // usuarioList.add(admin);
+        // usuarioList.add(user);
     }
 
     public static UsuarioServ getInstance() {
@@ -33,7 +32,7 @@ public class UsuarioServ {
     }
 
     public Usuario getUsuarioporUsuario(String user){
-        return usuarioList.stream().filter(e -> e.getUser().equalsIgnoreCase(user)).findFirst().orElse(null);
+        return usuarioList.stream().filter(e -> e.getUserName().equalsIgnoreCase(user)).findFirst().orElse(null);
     }
 
     public Usuario getUsuarioporId(int id){
@@ -41,7 +40,7 @@ public class UsuarioServ {
     }
 
     public void crearUsuario(Usuario usuario){
-        if(getUsuarioporUsuario(usuario.getUser()) != null)
+        if(getUsuarioporUsuario(usuario.getUserName()) != null)
             exit(-1);
         usuario.setId(makeId());
         usuarioList.add(usuario);
