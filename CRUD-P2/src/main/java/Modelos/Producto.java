@@ -11,7 +11,7 @@ import java.util.random.RandomGenerator;
 
 @Entity
 @Table(name="miproducto")
-public class Producto implements Serializable {
+public class Producto {
     @Id
     @GeneratedValue
     private int id;

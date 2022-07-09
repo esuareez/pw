@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
 
         BootStrapServices.getInstancia().init();
-        UsuarioServ.getInstance().crear(new Usuario("admim", "admin", "admin", "admin"));
+        UsuarioServ.getInstance().crear(new Usuario("admin", "admin", "admin", "admin"));
         //ProductoServ.getInstance().crear(new Producto("Winasorb",10,15,"dolor",0));
 
         Javalin app = Javalin.create(config ->{

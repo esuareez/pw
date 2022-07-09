@@ -2,6 +2,7 @@ package Modelos;
 
 import jakarta.persistence.*;
 import org.hibernate.persister.collection.OneToManyPersister;
+import org.jetbrains.annotations.NotNull;
 
 @Entity
 @Table(name="miproductopedido")
@@ -11,8 +12,12 @@ public class ProductoPedido {
     @GeneratedValue
     private int id;
     @OneToOne
+    @NotNull
+    @JoinColumn(name = "ID_PEDIDO")
     private Pedido pedido;
     @OneToOne
+    @NotNull
+    @JoinColumn(name = "ID_PRODUCTO")
     private Producto producto;
     private int cantidad;
 

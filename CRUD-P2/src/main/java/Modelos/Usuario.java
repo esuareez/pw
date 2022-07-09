@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="miusuario")
-public class Usuario implements Serializable {
+public class Usuario{
     @Id
     @GeneratedValue
     private int id;
@@ -20,7 +20,15 @@ public class Usuario implements Serializable {
 
     public Usuario() {
     }
-
+    public Usuario(String userName, String nombre, String password) {
+        this.userName = userName;
+        this.nombre = nombre;
+        this.password = password;
+    }
+    public Usuario(String userName,  String password) {
+        this.userName = userName;
+        this.password = password;
+    }
     public Usuario(String userName, String nombre, String password, String rol) {
         this.userName = userName;
         this.nombre = nombre;

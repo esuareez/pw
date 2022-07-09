@@ -48,7 +48,7 @@ public class ProductoController extends BaseController {
                 });
 
                 get("/",ctx -> {
-                    List<Producto> productoList = ProductoServ.getInstance().getProductoList();
+                    List<Producto> productoList = ProductoServ.getInstance().findAll();
                     modelo.put("productos",productoList);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/index.html",modelo);
@@ -87,18 +87,26 @@ public class ProductoController extends BaseController {
                     double precio = Double.parseDouble(ctx.formParam("precio"));
                     String descripcion = ctx.formParam("descripcion");
                     int estado = Integer.parseInt(ctx.formParam("estado"));
-                    Producto producto = new Producto(nombre,cantidad,precio,descripcion,estado);
-                    ProductoServ.getInstance().crearProducto(producto);
-                    ctx.redirect("/");
+                    List<Producto> lista = ProductoServ.getInstance().findAll();
+                    Producto producto = ProductoServ.getInstance().getProductoporNombre(nombre,lista);
+                    if(producto != null)
+                    {
+                        ctx.redirect("/crearProducto");
+                    }else{
+                        ProductoServ.getInstance().crear(new Producto(nombre,cantidad,precio,descripcion,estado));
+                        ctx.redirect("/admin/inventario");
+                    }
+                    //ProductoServ.getInstance().crearProducto(producto);
+
                 });
                 get("/inventario",ctx -> {
-                    List<Producto> productoList = ProductoServ.getInstance().getProductoList();
+                    List<Producto> productoList = ProductoServ.getInstance().findAll();
                     modelo.put("productos",productoList);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/Inventario.html", modelo);
                 });
                 get("/producto/editar/{id}",ctx -> {
-                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     if(producto == null)
                         ctx.redirect("/admin/inventario");
                     modelo.put("producto",producto);
@@ -113,11 +121,11 @@ public class ProductoController extends BaseController {
                     String descripcion = ctx.formParam("descripcion");
                     int estado = Integer.parseInt(ctx.formParam("estado"));
                     Producto producto = new Producto(id,nombre,cantidad,precio,descripcion,estado);
-                    ProductoServ.getInstance().editarProducto(producto);
+                    ProductoServ.getInstance().editar(producto);
                     ctx.redirect("/admin/inventario");
                 });
                 get("/producto/eliminar/{id}",ctx -> {
-                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     if(producto == null)
                         ctx.redirect("/admin/inventario");
                     ProductoServ.getInstance().deleteProducto(producto);
@@ -141,7 +149,7 @@ public class ProductoController extends BaseController {
                 });
 
                 get("/lista-usuarios",ctx -> {
-                    List<Usuario> usuarios = UsuarioServ.getInstance().getUsuarioList();
+                    List<Usuario> usuarios = UsuarioServ.getInstance().findAll();
                     modelo.put("usuarios",usuarios);
                     ctx.render("publico/Templates/Usuario/ListaUsuario.html",modelo);
                 });

@@ -63,7 +63,7 @@ public class GestionDb<T> {
      * @param entidad
      * @return
      */
-    private Object getValorCampo(T entidad){
+    public Object getValorCampo(T entidad){
         if(entidad == null){
             return null;
         }
