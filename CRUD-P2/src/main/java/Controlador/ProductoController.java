@@ -28,6 +28,15 @@ public class ProductoController extends BaseController {
             Map<String,Object> modelo = new HashMap<>();
             path("/", () ->{
                 before(ctx -> {
+                    if(ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null){
+                        Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(ctx.cookie("USESSION"), UsuarioServ.getInstance().findAll());
+                        if(u != null){
+                            if(u.getPassword().equalsIgnoreCase(ctx.cookie("UPSESSION"))){
+                                ctx.sessionAttribute("usuario",u);
+                            }
+                        }
+
+                    }
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
                         total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
