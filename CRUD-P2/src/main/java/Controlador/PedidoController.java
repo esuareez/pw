@@ -5,10 +5,12 @@ import Modelos.Producto;
 import Modelos.ProductoPedido;
 import Modelos.Usuario;
 import Servicios.PedidoServ;
+import Servicios.ProductoPedidoServ;
 import Servicios.ProductoServ;
 import Util.BaseController;
 import io.javalin.Javalin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,16 +56,16 @@ public class PedidoController extends BaseController {
                     {
                         ctx.redirect("/");
                     }else{
-                        Pedido pedido = PedidoServ.getInstance().getPedidoCarroporUsuario(user);
+                        List<Pedido> lista = PedidoServ.getInstance().findAll();
+                        Pedido pedido = PedidoServ.getInstance().getPedidoCarroporUsuario(user, lista);
                         if(pedido == null){
                             modelo.put("isEmpty",0);
                             ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                         }else{
-                            //List<ProductoPedido> pp = pedido.getProductoPedido();
-                            List<ProductoPedido> pp = null;
-                            int id = 0;
+                            List<ProductoPedido> pp = PedidoServ.getInstance().getProductosDePedido(user);
                             if(pedido != null){
                                 for( var item : pp){
+                                    if(pedido.getId() == item.getPedido().getId())
                                         ptotal += (item.getProducto().getPrecio() * item.getCantidad());
                                 }
                                 modelo.put("isEmpty",1);
@@ -80,27 +82,28 @@ public class PedidoController extends BaseController {
                 });
                 post("/add/{id}",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
-                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
                     PedidoServ.getInstance().addProducto(producto,user,cantidad);
                     ctx.redirect("/");
                 });
                 post("/edit/{id}",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
-                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
                     PedidoServ.getInstance().editarCarro(producto,user,cantidad);
                     ctx.redirect("/user/mi-carrito");
                 });
                 get("/remove/{id}", ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
-                    Producto producto = ProductoServ.getInstance().getProductoporID(ctx.pathParamAsClass("id",Integer.class).get());
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    //ProductoPedidoServ.getInstance().eliminar(producto.getId());
                     PedidoServ.getInstance().removeProducto(producto,user);
                     ctx.redirect("/user/mi-carrito");
                 });
 
                 get("/procesar/{id}", ctx -> {
-                    Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
+                    Pedido pedido = PedidoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     if(pedido == null || pedido.getEstado() == 2){
                         ctx.redirect("/");
                     }else{

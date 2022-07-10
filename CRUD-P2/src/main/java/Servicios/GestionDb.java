@@ -127,7 +127,7 @@ public class GestionDb<T> {
      *
      * @param entidadId
      */
-    /*public boolean eliminar(Object entidadId) throws PersistenceException{
+    public boolean eliminar(Object entidadId) throws PersistenceException{
         boolean ok = false;
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
@@ -140,7 +140,7 @@ public class GestionDb<T> {
             em.close();
         }
         return ok;
-    }*/
+    }
 
     /**
      *

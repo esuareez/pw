@@ -11,11 +11,11 @@ public class ProductoPedido {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "ID_PEDIDO")
     private Pedido pedido;
-    @OneToOne
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "ID_PRODUCTO")
     private Producto producto;
@@ -24,10 +24,19 @@ public class ProductoPedido {
     public ProductoPedido() {
     }
 
-    public ProductoPedido(Producto producto, int cantidad) {
+
+
+    public ProductoPedido(Pedido pedido, Producto producto, int cantidad) {
         this.producto = producto;
         this.cantidad = cantidad;
+        this.pedido = pedido;
+    }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
     }
     public Producto getProducto() {
         return producto;
@@ -45,4 +54,12 @@ public class ProductoPedido {
         this.cantidad = cantidad;
     }
 
+    @NotNull
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(@NotNull Pedido pedido) {
+        this.pedido = pedido;
+    }
 }

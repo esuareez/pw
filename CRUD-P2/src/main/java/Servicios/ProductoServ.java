@@ -27,10 +27,6 @@ public class ProductoServ extends GestionDb<Producto> {
         return lista.stream().filter(e -> e.getNombre().equalsIgnoreCase(nombre)).findFirst().orElse(null);
     }
 
-    public Producto getProductoporID(int id){
-        return productoList.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
-    }
-
     public void deleteProducto(Producto p)
     {
         p.setEstado(0);// 0 - Eliminado.

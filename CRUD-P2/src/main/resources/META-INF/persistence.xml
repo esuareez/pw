@@ -4,6 +4,8 @@
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <class>Modelos.Usuario</class>
     <class>Modelos.Producto</class>
+    <class>Modelos.Pedido</class>
+    <class>Modelos.ProductoPedido</class>
     <properties>
         <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/tiendita" />
         <property name="jakarta.persistence.jdbc.driver" value= "org.h2.Driver"/>

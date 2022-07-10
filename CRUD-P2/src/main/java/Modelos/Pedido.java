@@ -28,7 +28,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Usuario usuario, List<ProductoPedido> productoPedido) {
+    public Pedido(Usuario usuario) {
         this.usuario = usuario;
         //this.productoPedido = productoPedido;
         this.fecha = Date.from(Instant.now());

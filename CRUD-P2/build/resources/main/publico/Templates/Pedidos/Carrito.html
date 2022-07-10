@@ -155,7 +155,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="item : ${carrito}">
+                                    <tr th:each="item : ${carrito}"
+                                        th:if="${(item.getPedido.getEstado == 1)}">
                                         <td>
                                             <a class="btn btn-danger" th:href="'/user/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
                                         </td>

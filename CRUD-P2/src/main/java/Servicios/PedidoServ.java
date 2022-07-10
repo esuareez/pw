@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PedidoServ {
+public class PedidoServ extends GestionDb<Pedido> {
     private static PedidoServ instancia;
     private List<Pedido> pedidoList = new ArrayList<>();
 
@@ -25,44 +25,36 @@ public class PedidoServ {
     }
 
     public PedidoServ() {
+        super(Pedido.class);
     }
 
-    public Pedido getPedidoporId(int id){
-        return pedidoList.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
+    public Pedido getPedido(Pedido pedido, List<Pedido> lista){
+        return lista.stream().filter(e -> e.getId() == pedido.getId()).findFirst().orElse(null);
     }
 
-    public Pedido getPedidoporUsuario(Usuario usuario){
-        return pedidoList.stream().filter(e -> e.getUsuario().getId() == usuario.getId()).findFirst().orElse(null);
+    public Pedido getPedidoporUsuario(Usuario usuario, List<Pedido> pedLista){
+        return pedLista.stream().filter(e -> e.getUsuario().getId() == usuario.getId()).findFirst().orElse(null);
     }
 
-    public Pedido getPedidoCarroporUsuario(Usuario usuario){
-        return pedidoList.stream().filter(e -> e.getUsuario().getId() == usuario.getId() && e.getEstado() == 1).findFirst().orElse(null);
-    }
-    /*
-    Pedido
-     */
-    public Pedido crearPedido(Pedido pedido){
-        int idGenerado = makeId();
-        while(getPedidoporId(idGenerado) != null)
-            idGenerado = makeId();
-        pedido.setId(idGenerado);
-        pedidoList.add(pedido);
-        return pedido;
+    public Pedido getPedidoCarroporUsuario(Usuario usuario, List<Pedido> pedList){
+        return pedList.stream().filter(e -> e.getUsuario().getId() == usuario.getId() && e.getEstado() == 1).findFirst().orElse(null);
     }
 
-    public Pedido deletePedido(Pedido p)
-    {
-        Pedido pedido = getPedidoporId(p.getId());
-        if(pedido == null)
-        {
-            System.out.println("El pedido no existe.");
-            return null;
+    public List<ProductoPedido> getProductosDePedido(Usuario usuario){
+        Pedido aux = getPedidoCarroporUsuario(usuario,findAll());
+        List<ProductoPedido> lista = new ArrayList<>();
+        for(var productoped : ProductoPedidoServ.getInstance().findAll()){
+            if(productoped.getPedido().getId() == aux.getId())
+                lista.add(productoped);
         }
-        pedidoList.remove(pedido);
-        return pedido;
+
+        for(var item : lista)
+            System.out.println(item.getProducto().getNombre());
+        return lista;
     }
+
     public Pedido completarPedido(Pedido p){
-        Pedido pedido = getPedidoporId(p.getId());
+        Pedido pedido = find(p.getId());
         double total = 0;
         if(pedido == null)
         {
@@ -70,11 +62,15 @@ public class PedidoServ {
             return null;
         }
         pedido.setEstado(2);
-        /*for( var item : pedido.getProductoPedido()){
-            total += (item.getProducto().getPrecio() * item.getCantidad());
-            item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
-        }*/
+        for( var item : ProductoPedidoServ.getInstance().findAll()){
+            if(item.getPedido().getId() == pedido.getId()){
+                total += (item.getProducto().getPrecio() * item.getCantidad());
+                item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
+                ProductoServ.getInstance().editar(item.getProducto());
+            }
+        }
         pedido.setTotal(total);
+        editar(pedido);
         return pedido;
     }
     public List<Pedido> getPedidoList() {
@@ -88,73 +84,68 @@ public class PedidoServ {
      */
 
     public void addProducto(Producto producto, Usuario usuario, int cantidad) {
-        Pedido pedido = getPedidoCarroporUsuario(usuario);
-        if (pedido == null) {
-            List<ProductoPedido> productos = new ArrayList<>();
-            ProductoPedido product = new ProductoPedido(producto, cantidad);
-            productos.add(product);
-            Pedido p = new Pedido(usuario, productos);
-            crearPedido(p);
+        Pedido pedido = getPedidoCarroporUsuario(usuario,findAll());
+
+       if (pedido == null) {
+           Pedido p = crear(new Pedido(usuario));
+           ProductoPedidoServ.getInstance().crear(new ProductoPedido(p,producto, cantidad));
         } else {
-            /*boolean tieneProducto = false;
-            for(var product : pedido.getProductoPedido()){
-                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad()){
-                    if(product.getCantidad()+cantidad <= product.getProducto().getCantidad())
+           System.out.println(pedido.getId()+" "+pedido.getEstado()+" ");
+            boolean tieneProducto = false;
+            for(var product : ProductoPedidoServ.getInstance().findAll()){
+                if(product.getProducto().getId() == producto.getId() && product.getProducto().getCantidad() >= product.getCantidad() && product.getPedido().getUsuario().getId() == usuario.getId()
+                && product.getPedido().getEstado() == 1){
+                    if(product.getCantidad()+cantidad <= product.getProducto().getCantidad()){
                         product.setCantidad(product.getCantidad()+cantidad);
+                        ProductoPedidoServ.getInstance().editar(product);
+                    }
                     tieneProducto = true;
                 }
             }
             if(tieneProducto == false){
-                ProductoPedido pp = new ProductoPedido(producto,cantidad);
-                pedido.getProductoPedido().add(pp);
-            }*/
+                ProductoPedidoServ.getInstance().crear(new ProductoPedido(pedido,producto,cantidad));
+            }
         }
     }
 
     public void editarCarro(Producto producto, Usuario usuario, int cantidad){
-        /*Pedido pedido = getPedidoCarroporUsuario(usuario);
-        for(var product : pedido.getProductoPedido()){
-            if(product.getProducto().getId() == producto.getId()){
+        Pedido pedido = getPedidoCarroporUsuario(usuario,findAll());
+
+        for(var product : ProductoPedidoServ.getInstance().findAll()){
+            if(product.getProducto().getId() == producto.getId() && pedido.getEstado() == 1
+                    && product.getPedido().getId() == pedido.getId()){
                 product.setCantidad(cantidad);
+                ProductoPedidoServ.getInstance().editar(product);
             }
-        }*/
+        }
+
     }
 
     public void removeProducto(Producto producto, Usuario usuario){
-       /* Pedido pedido = getPedidoCarroporUsuario(usuario);
+       Pedido pedido = getPedidoCarroporUsuario(usuario, findAll());
         if(pedido != null)
         {
-           for(var item : pedido.getProductoPedido()){
-               if(item.getProducto().getId() == producto.getId()){
-                   pedido.getProductoPedido().remove(item);
+           for(var item : ProductoPedidoServ.getInstance().findAll()){
+               if(item.getProducto().getId() == producto.getId() && item.getPedido().getUsuario().getId() == usuario.getId()){
+                   ProductoPedidoServ.getInstance().eliminar(item.getId());
                    break;
                }
            }
-        }*/
+        }
     }
 
     public int getTotalProductosenCarrito(Usuario usuario){
         int total = 0;
-        /*Pedido pedido = getPedidoCarroporUsuario(usuario);
+        Pedido pedido = getPedidoCarroporUsuario(usuario,findAll());
         if(pedido == null)
             return total;
 
-        if(pedido.getProductoPedido().size() == 0)
-            return total;
-
-        for(var item : pedido.getProductoPedido()){
+        for(var item : ProductoPedidoServ.getInstance().findAll()){
+            if(item.getPedido().getId() == pedido.getId())
                 total += item.getCantidad();
-        }*/
+        }
         return total;
     }
 
-    public int makeId(){
-        int num, min = 100000, max = 999999;
-        num = (int)Math.floor(Math.random()*(max-min+1)+min);
-        while(getPedidoporId(num) != null)
-        {
-            num = (int)Math.floor(Math.random()*(max-min+1)+min);
-        }
-        return num;
-    }
 }
+

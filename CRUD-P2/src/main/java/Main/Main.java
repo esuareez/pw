@@ -19,7 +19,7 @@ public class Main {
 
         BootStrapServices.getInstancia().init();
         UsuarioServ.getInstance().crear(new Usuario("admin", "admin", "admin", "admin"));
-        //ProductoServ.getInstance().crear(new Producto("Winasorb",10,15,"dolor",0));
+        ProductoServ.getInstance().crear(new Producto("Winasorb",10,15,"dolor",1));
 
         Javalin app = Javalin.create(config ->{
             config.addStaticFiles(staticFileConfig -> {

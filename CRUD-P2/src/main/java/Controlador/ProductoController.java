@@ -5,6 +5,7 @@ import Modelos.Producto;
 import Modelos.ProductoPedido;
 import Modelos.Usuario;
 import Servicios.PedidoServ;
+import Servicios.ProductoPedidoServ;
 import Servicios.ProductoServ;
 import Servicios.UsuarioServ;
 import Util.BaseController;
@@ -133,17 +134,17 @@ public class ProductoController extends BaseController {
                 });
 
                 get("/pedidos",ctx ->{
-                    List<Pedido> pedidoList = PedidoServ.getInstance().getPedidoList();
+                    List<Pedido> pedidoList = PedidoServ.getInstance().findAll();
                     modelo.put("pedidos",pedidoList);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Pedidos/Historial.html",modelo);
                 });
 
                 get("/pedido/{id}", ctx -> {
-                    Pedido pedido = PedidoServ.getInstance().getPedidoporId(ctx.pathParamAsClass("id",Integer.class).get());
-                    //List<ProductoPedido> pp = pedido.getProductoPedido();
-                    List<ProductoPedido> pp = null;
+                    Pedido pedido = PedidoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    List<ProductoPedido> pp = ProductoPedidoServ.getInstance().findAll();
                     modelo.put("productos",pp);
+                    modelo.put("pedido",pedido);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Pedidos/DetallesProducto.html",modelo);
                 });

@@ -150,7 +150,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="item : ${productos}">
+                            <tr th:each="item : ${productos}"
+                                th:if="${(item.getPedido.getId == pedido.getId)}">
                                 <td th:text="${item.getProducto.getNombre}"></td>
                                 <td th:text="${item.getProducto.getPrecio}"></td>
                                 <td th:text="${item.cantidad}"></td>
