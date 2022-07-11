@@ -1,16 +1,12 @@
 package Controlador;
 
-import Modelos.Pedido;
-import Modelos.Producto;
-import Modelos.ProductoPedido;
-import Modelos.Usuario;
-import Servicios.PedidoServ;
-import Servicios.ProductoPedidoServ;
-import Servicios.ProductoServ;
-import Servicios.UsuarioServ;
+import Modelos.*;
+import Servicios.*;
 import Util.BaseController;
 import io.javalin.Javalin;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +99,17 @@ public class ProductoController extends BaseController {
                     {
                         ctx.redirect("/crearProducto");
                     }else{
-                        ProductoServ.getInstance().crear(new Producto(nombre,cantidad,precio,descripcion,estado));
+                        Producto p = ProductoServ.getInstance().crear(new Producto(nombre,cantidad,precio,descripcion,estado));
+                        ctx.uploadedFiles("foto").forEach(uploadedFile -> {
+                            try {
+                                byte[] bytes = uploadedFile.getContent().readAllBytes();
+                                String encodedString = Base64.getEncoder().encodeToString(bytes);
+                                Foto foto = new Foto(p,uploadedFile.getFilename(), uploadedFile.getContentType(), encodedString);
+                                FotoServices.getInstancia().crear(foto);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
                         ctx.redirect("/admin/inventario");
                     }
                     //ProductoServ.getInstance().crearProducto(producto);
@@ -117,9 +123,20 @@ public class ProductoController extends BaseController {
                 });
                 get("/producto/editar/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    List<Foto> fotos = FotoServices.getInstancia().findAll();
+                    boolean tiene = false;
                     if(producto == null)
                         ctx.redirect("/admin/inventario");
+                    for(var item : fotos){
+                        if(item.getProducto().getId() == producto.getId())
+                            tiene = true;
+                    }
+                    if(!tiene)
+                        modelo.put("img",0);
+                    else
+                        modelo.put("img",1);
                     modelo.put("producto",producto);
+                    modelo.put("fotos",fotos);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/editarProducto.html",modelo);
                 });
@@ -132,7 +149,34 @@ public class ProductoController extends BaseController {
                     int estado = Integer.parseInt(ctx.formParam("estado"));
                     Producto producto = new Producto(id,nombre,cantidad,precio,descripcion,estado);
                     ProductoServ.getInstance().editar(producto);
+                    ctx.uploadedFiles("foto").forEach(uploadedFile -> {
+                        try {
+                            byte[] bytes = uploadedFile.getContent().readAllBytes();
+                            String encodedString = Base64.getEncoder().encodeToString(bytes);
+                            if(uploadedFile.getFilename().equalsIgnoreCase("") || uploadedFile.getFilename() == null){
+
+                            }else{
+                                Foto foto = new Foto(producto,uploadedFile.getFilename(), uploadedFile.getContentType(), encodedString);
+                                FotoServices.getInstancia().crear(foto);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                     ctx.redirect("/admin/inventario");
+                });
+                get("/producto/eliminar/{idp}/imagen/{id}", ctx -> {
+                    int idproducto = Integer.parseInt(ctx.pathParam("idp"));
+                    try {
+                        Foto foto = FotoServices.getInstancia().find(ctx.pathParamAsClass("id", Long.class).get());
+                        if(foto!=null){
+                            FotoServices.getInstancia().eliminar(foto.getId());
+                        }
+                    }catch (Exception e){
+                        System.out.println("Error: "+e.getMessage());
+                    }
+                   ctx.redirect("/admin/producto/editar/"+idproducto);
+                    //ctx.redirect("/admin/inventario");
                 });
                 get("/producto/eliminar/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());

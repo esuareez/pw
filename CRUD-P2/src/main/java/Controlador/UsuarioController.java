@@ -72,6 +72,8 @@ public class UsuarioController extends BaseController {
 
                 get("/logout",ctx -> {
                     ctx.sessionAttribute("usuario",null);
+                    ctx.removeCookie("USESSION");
+                    ctx.removeCookie("UPSESSION");
                     ctx.sessionAttribute("tc",null);
                     ctx.redirect("/");
                 });
