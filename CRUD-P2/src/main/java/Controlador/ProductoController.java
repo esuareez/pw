@@ -59,6 +59,7 @@ public class ProductoController extends BaseController {
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/index.html",modelo);
                 });
+
             });
 
             path("/admin/", () -> {
@@ -140,6 +141,7 @@ public class ProductoController extends BaseController {
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/editarProducto.html",modelo);
                 });
+
                 post("/editarProducto",ctx -> {
                     int id = Integer.parseInt(ctx.formParam("id"));
                     String nombre = ctx.formParam("nombre");

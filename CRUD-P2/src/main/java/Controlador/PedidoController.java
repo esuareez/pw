@@ -1,9 +1,7 @@
 package Controlador;
 
-import Modelos.Pedido;
-import Modelos.Producto;
-import Modelos.ProductoPedido;
-import Modelos.Usuario;
+import Modelos.*;
+import Servicios.FotoServices;
 import Servicios.PedidoServ;
 import Servicios.ProductoPedidoServ;
 import Servicios.ProductoServ;
@@ -24,7 +22,7 @@ public class PedidoController extends BaseController {
     public PedidoController(Javalin app) {
         super(app);
     }
-
+    private int total;
     public void aplicarRutas(){
         app.routes(() -> {
             path("/user/", () -> {
@@ -32,7 +30,7 @@ public class PedidoController extends BaseController {
                 before(ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
-                        int total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
+                        total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
                         ctx.sessionAttribute("tc",total);
                         modelo.put("isLogin",1);
                         modelo.put("usuario",user.getNombre());
@@ -47,6 +45,20 @@ public class PedidoController extends BaseController {
                         modelo.put("isLogin",0);
                         ctx.redirect("/login");
                     }
+                });
+
+                get("/producto/view/{id}",ctx -> {
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    List<Foto> fotos = FotoServices.getInstancia().findAll();
+                    List<Foto> fotosProducto = null;
+                    for(var foto : fotos){
+                        if(foto.getProducto().getId() == producto.getId())
+                            fotosProducto.add(foto);
+                    }
+                    modelo.put("producto",producto);
+                    modelo.put("fotos",fotosProducto);
+                    modelo.put("carrito",total);
+                    ctx.render("publico/Templates/Productos/View.html",modelo);
                 });
 
                 get("/mi-carrito", ctx -> {

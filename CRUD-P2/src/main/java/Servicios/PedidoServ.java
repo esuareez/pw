@@ -28,14 +28,6 @@ public class PedidoServ extends GestionDb<Pedido> {
         super(Pedido.class);
     }
 
-    public Pedido getPedido(Pedido pedido, List<Pedido> lista){
-        return lista.stream().filter(e -> e.getId() == pedido.getId()).findFirst().orElse(null);
-    }
-
-    public Pedido getPedidoporUsuario(Usuario usuario, List<Pedido> pedLista){
-        return pedLista.stream().filter(e -> e.getUsuario().getId() == usuario.getId()).findFirst().orElse(null);
-    }
-
     public Pedido getPedidoCarroporUsuario(Usuario usuario, List<Pedido> pedList){
         return pedList.stream().filter(e -> e.getUsuario().getId() == usuario.getId() && e.getEstado() == 1).findFirst().orElse(null);
     }
@@ -73,10 +65,6 @@ public class PedidoServ extends GestionDb<Pedido> {
         editar(pedido);
         return pedido;
     }
-    public List<Pedido> getPedidoList() {
-        return pedidoList;
-    }
-
     /*
 
     ProductoPedido
