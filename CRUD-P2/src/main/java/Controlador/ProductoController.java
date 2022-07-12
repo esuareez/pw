@@ -83,6 +83,14 @@ public class ProductoController extends BaseController {
                         ctx.redirect("/login");
                     }
                 });
+                //Eliminar comentario (Lado Admin)
+                get("/producto/{idp}/comentario/eliminar/{id}",ctx -> {
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("idp",Integer.class).get());
+                    ComentarioServ.getInstance().eliminar(Integer.parseInt(ctx.pathParam("id")));
+                    ctx.redirect("/user/producto/view/"+producto.getId());
+                });
+
+                //Productos
                 get("/crearProducto",ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
                     modelo.put("carrito",total);

@@ -7,6 +7,7 @@
     <class>Modelos.Pedido</class>
     <class>Modelos.ProductoPedido</class>
     <class>Modelos.Foto</class>
+    <class>Modelos.Comentario</class>
     <properties>
         <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/tiendita" />
         <property name="jakarta.persistence.jdbc.driver" value= "org.h2.Driver"/>

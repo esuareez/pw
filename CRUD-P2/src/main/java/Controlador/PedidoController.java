@@ -1,10 +1,7 @@
 package Controlador;
 
 import Modelos.*;
-import Servicios.FotoServices;
-import Servicios.PedidoServ;
-import Servicios.ProductoPedidoServ;
-import Servicios.ProductoServ;
+import Servicios.*;
 import Util.BaseController;
 import io.javalin.Javalin;
 
@@ -46,9 +43,14 @@ public class PedidoController extends BaseController {
                         ctx.redirect("/login");
                     }
                 });
-
+                // Ver producto
                 get("/producto/view/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    if(user != null)
+                        modelo.put("usuario",user);
+                    else
+                        modelo.put("usuario","");
                     List<Foto> fotos = FotoServices.getInstancia().findAll();
                     List<Foto> fotosProducto = null;
                     for(var foto : fotos){
@@ -58,9 +60,23 @@ public class PedidoController extends BaseController {
                     modelo.put("producto",producto);
                     modelo.put("fotos",fotosProducto);
                     modelo.put("carrito",total);
+                    modelo.put("comentarios",ComentarioServ.getInstance().findAll());
+
                     ctx.render("publico/Templates/Productos/View.html",modelo);
                 });
+                // Comentar producto
+                post("/producto/comentario/{id}", ctx -> {
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    if(user == null){
+                        ctx.redirect("/login");
+                    }
+                    String comentario = ctx.formParam("comentario");
+                    ComentarioServ.getInstance().crear(new Comentario(producto,user,comentario));
+                    ctx.redirect("/user/producto/view/"+producto.getId());
+                });
 
+                // Pedidos
                 get("/mi-carrito", ctx -> {
                     double ptotal = 0;
                     Usuario user = ctx.sessionAttribute("usuario");

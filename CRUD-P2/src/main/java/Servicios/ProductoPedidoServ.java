@@ -20,9 +20,6 @@ public class ProductoPedidoServ extends GestionDb<ProductoPedido>{
 
     public ProductoPedidoServ() {
         super(ProductoPedido.class);
-        for(int item = 0; item < findAll().size(); item++){
-
-        }
     }
 
 
