@@ -226,7 +226,7 @@
                             <div class="col-md-6">
 
                                 <div class="headings d-flex justify-content-between align-items-center mb-3">
-                                    <h5>Comentarios</h5>
+                                    <h5 th:text="'Comentarios ('+${cantidad}+')'"> </h5>
                                 </div>
                                 <span th:each="item : ${comentarios}"
                                 th:if="${(item.getProducto.getId == producto.getId)}">
@@ -245,10 +245,6 @@
                                                 <div class="reply px-4">
                                                     <a th:href="'/admin/producto/'+${producto.getId}+'/comentario/eliminar/'+${item.getId}"><small>Eliminar comentario</small></a>
                                                     <span class="dots"></span>
-                                                </div>
-                                                <div class="icons align-items-center">
-                                                    <i class="fa fa-star text-warning"></i>
-                                                    <i class="fa fa-check-circle-o check-icon"></i>
                                                 </div>
                                             </div>
                                         </span>

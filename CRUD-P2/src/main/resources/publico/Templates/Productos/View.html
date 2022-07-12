@@ -226,7 +226,7 @@
                             <div class="col-md-6">
 
                                 <div class="headings d-flex justify-content-between align-items-center mb-3">
-                                    <h5>Comentarios</h5>
+                                    <h5 th:text="'Comentarios ('+${cantidad}+')'"> </h5>
                                 </div>
                                 <span th:each="item : ${comentarios}"
                                 th:if="${(item.getProducto.getId == producto.getId)}">

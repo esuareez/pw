@@ -4,6 +4,7 @@ import Modelos.*;
 import Servicios.*;
 import Util.BaseController;
 import io.javalin.Javalin;
+import org.jasypt.util.text.AES256TextEncryptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,23 +26,39 @@ public class PedidoController extends BaseController {
             path("/user/", () -> {
                 Map<String,Object> modelo = new HashMap<>();
                 before(ctx -> {
-                    Usuario user = ctx.sessionAttribute("usuario");
-                    if(user != null){
-                        total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
-                        ctx.sessionAttribute("tc",total);
-                        modelo.put("isLogin",1);
-                        modelo.put("usuario",user.getNombre());
-                        if(user.getRol().equalsIgnoreCase("cliente")){
-                            modelo.put("rol","cliente");
-                        }else{
-                            if(user.getRol().equalsIgnoreCase("admin")){
-                                modelo.put("rol","admin");
+                    /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null) ||
+                            (ctx.cookie("USESSION").equalsIgnoreCase("") && ctx.cookie("UPSESSION").equalsIgnoreCase(""))){
+                        AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+                        textEncryptor.setPassword("encpUss");
+                        String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
+                        AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
+                        textEncryptor1.setPassword("encpPss");
+                        String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
+                        Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
+                        if(u != null){
+                            if(u.getPassword().equalsIgnoreCase(pass)){
+                                ctx.sessionAttribute("usuario",u);
                             }
                         }
-                    }else{
-                        modelo.put("isLogin",0);
+                    }*/
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    if (user != null) {
+                        total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
+                        ctx.sessionAttribute("tc", total);
+                        modelo.put("isLogin", 1);
+                        modelo.put("usuario", user.getNombre());
+                        if (user.getRol().equalsIgnoreCase("cliente")) {
+                            modelo.put("rol", "cliente");
+                        } else {
+                            if (user.getRol().equalsIgnoreCase("admin")) {
+                                modelo.put("rol", "admin");
+                            }
+                        }
+                    } else {
+                        modelo.put("isLogin", 0);
                         ctx.redirect("/login");
                     }
+
                 });
                 // Ver producto
                 get("/producto/view/{id}",ctx -> {
@@ -52,15 +69,18 @@ public class PedidoController extends BaseController {
                     else
                         modelo.put("usuario","");
                     List<Foto> fotos = FotoServices.getInstancia().findAll();
+                    List<Comentario> comentarios = ComentarioServ.getInstance().findAll();
                     List<Foto> fotosProducto = null;
-                    for(var foto : fotos){
-                        if(foto.getProducto().getId() == producto.getId())
-                            fotosProducto.add(foto);
+                    int cantidad = 0;
+                    for(var item : comentarios){
+                        if(item.getProducto().getId() == producto.getId())
+                            cantidad++;
                     }
                     modelo.put("producto",producto);
                     modelo.put("fotos",fotosProducto);
                     modelo.put("carrito",total);
-                    modelo.put("comentarios",ComentarioServ.getInstance().findAll());
+                    modelo.put("comentarios",comentarios);
+                    modelo.put("cantidad",cantidad);
 
                     ctx.render("publico/Templates/Productos/View.html",modelo);
                 });
