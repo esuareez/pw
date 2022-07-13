@@ -70,14 +70,21 @@ public class PedidoController extends BaseController {
                         modelo.put("usuario","");
                     List<Foto> fotos = FotoServices.getInstancia().findAll();
                     List<Comentario> comentarios = ComentarioServ.getInstance().findAll();
-                    List<Foto> fotosProducto = null;
+                    for(var item : fotos){
+                        if(item.getProducto().getId() == producto.getId()){
+                            Foto foto = item;
+                            System.out.println(foto.getId()+" "+foto.getProducto().getNombre());
+                            modelo.put("foto",foto);
+                            break;
+                        }
+                    }
                     int cantidad = 0;
                     for(var item : comentarios){
                         if(item.getProducto().getId() == producto.getId())
                             cantidad++;
                     }
                     modelo.put("producto",producto);
-                    modelo.put("fotos",fotosProducto);
+                    modelo.put("fotos",fotos);
                     modelo.put("carrito",total);
                     modelo.put("comentarios",comentarios);
                     modelo.put("cantidad",cantidad);

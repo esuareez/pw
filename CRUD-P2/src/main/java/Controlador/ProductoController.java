@@ -25,22 +25,6 @@ public class ProductoController extends BaseController {
             Map<String,Object> modelo = new HashMap<>();
             path("/", () ->{
                 before(ctx -> {
-                    if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null) ||
-                            (ctx.cookie("USESSION").equalsIgnoreCase("") && ctx.cookie("UPSESSION").equalsIgnoreCase(""))){
-                        AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
-                        textEncryptor.setPassword("encpUss");
-                        String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
-                        AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
-                        textEncryptor1.setPassword("encpPss");
-                        String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
-                        Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
-                        if(u != null){
-                            if(u.getPassword().equalsIgnoreCase(pass)){
-                                ctx.sessionAttribute("usuario",u);
-                            }
-                        }
-
-                    }
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
                         total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
@@ -55,10 +39,26 @@ public class ProductoController extends BaseController {
                             }
                         }
                     }else{
-                        total = 0;
-                        modelo.put("isLogin",0);
-                        modelo.put("rol",null);
-                    }
+                        /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null) ||
+                                !(ctx.cookie("USESSION").equalsIgnoreCase("") && ctx.cookie("UPSESSION").equalsIgnoreCase(""))){
+                            AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+                            textEncryptor.setPassword("encpUss");
+                            String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
+                            AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
+                            textEncryptor1.setPassword("encpPss");
+                            String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
+                            Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
+                            if(u != null){
+                                if(u.getPassword().equalsIgnoreCase(pass)){
+                                    ctx.sessionAttribute("usuario",u);
+                                }
+                            }
+                        }else{*/
+                            total = 0;
+                            modelo.put("isLogin",0);
+                            modelo.put("rol",null);
+                        }
+                    //}
                 });
 
                 get("/",ctx -> {
