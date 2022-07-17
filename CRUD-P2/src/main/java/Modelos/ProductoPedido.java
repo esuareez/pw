@@ -24,12 +24,16 @@ public class ProductoPedido {
     public ProductoPedido() {
     }
 
-
-
     public ProductoPedido(Pedido pedido, Producto producto, int cantidad) {
         this.producto = producto;
         this.cantidad = cantidad;
         this.pedido = pedido;
+    }
+
+    public ProductoPedido( Producto producto, int cantidad) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+
     }
     public int getId() {
         return id;

@@ -78,7 +78,7 @@
                     </li>
 
                     <li class="sidebar-item ">
-                        <a th:href="@{/user/mi-carrito}" class='sidebar-link'>
+                        <a th:href="@{/mi-carrito}" class='sidebar-link'>
                             <i class="bi bi-cart4"></i>
                             <span>Carrito <span th:text="${carrito}" class="badge bg-dark text-white ms-1 rounded-pill"></span> </span>
                         </a>
@@ -167,7 +167,7 @@
                                     <input type="number" min="1" th:max="${item.cantidad}" value="1" name="cantidad" form="addcart">
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-success" form="addcart" th:formaction="'/user/add/'+${item.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button>
+                                    <button type="submit" class="btn btn-success" form="addcart" th:formaction="'/index/add/'+${item.id}"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button>
                                     <button type="submit" class="btn btn-dark" form="view" th:formaction="'/user/producto/view/'+${item.id}"><i class="fa-solid fa-eye"></i> Ver detalles</button>
                                 </td>
                             </tr>

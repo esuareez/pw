@@ -156,9 +156,9 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="item : ${carrito}"
-                                        th:if="${(item.getPedido.getEstado == 1)}">
+                                        >
                                         <td>
-                                            <a class="btn btn-danger" th:href="'/user/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
+                                            <a class="btn btn-danger" th:href="'/remove/'+${item.getProducto.getId}"><i class="fa-solid fa-trash-can"></i></a>
                                         </td>
                                         <td th:text="${item.getProducto.getNombre}"></td>
                                         <td th:text="${item.getProducto.getPrecio}"></td>
@@ -166,7 +166,7 @@
                                             <input type="number" min="1" th:max="${item.getProducto.getCantidad}" th:value="${item.cantidad}" name="cantidad" form="editcart">
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn btn-success" form="editcart" th:formaction="'/user/edit/'+${item.getProducto.getId}"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                                            <button type="submit" class="btn btn-success" form="editcart" th:formaction="'/edit/'+${item.getProducto.getId}"><i class="fa-solid fa-arrow-rotate-right"></i></button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -174,7 +174,7 @@
                             </div>
 
                             <div class="card-header d-flex justify-content-end">
-                                 <a class="btn btn-success" th:href="'/user/procesar/'+${pedido}"><i class="fa-solid fa-check"></i>Procesar compra</a>
+                                 <a class="btn btn-success" th:href="'/user/procesar'"><i class="fa-solid fa-check"></i>Procesar compra</a>
                                 <b>Total:</b>&nbsp; RD$<p th:text="${total}"></p>
 
                             </div>

@@ -103,7 +103,7 @@ public class PedidoController extends BaseController {
                     ctx.redirect("/user/producto/view/"+producto.getId());
                 });
 
-                // Pedidos
+                /*// Pedidos
                 get("/mi-carrito", ctx -> {
                     double ptotal = 0;
                     Usuario user = ctx.sessionAttribute("usuario");
@@ -155,16 +155,14 @@ public class PedidoController extends BaseController {
                     //ProductoPedidoServ.getInstance().eliminar(producto.getId());
                     PedidoServ.getInstance().removeProducto(producto,user);
                     ctx.redirect("/user/mi-carrito");
-                });
+                });*/
 
-                get("/procesar/{id}", ctx -> {
-                    Pedido pedido = PedidoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
-                    if(pedido == null || pedido.getEstado() == 2){
-                        ctx.redirect("/");
-                    }else{
-                        PedidoServ.getInstance().completarPedido(pedido);
-                        ctx.redirect("/user/mi-carrito");
-                    }
+                get("/procesar", ctx -> {
+                    List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    ProductoPedidoServ.getInstance()._completarPedido(lista,user);
+                    ctx.sessionAttribute("carrito",null);
+                    ctx.redirect("/mi-carrito");
                 });
 
             });

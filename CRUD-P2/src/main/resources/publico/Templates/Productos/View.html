@@ -247,7 +247,7 @@
                                         <div class="user d-flex flex-row align-items-center">
 
                                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" width="30" class="user-img rounded-circle mr-2">
-                                            <span><small class="font-weight-bold text-primary" th:text="${item.getUsuario.getUserName}">james_olesenn</small> <small class="font-weight-bold" th:text="${item.getComentario}">Hmm, This poster looks cool</small></span>
+                                            <span><small class="font-weight-bold text-primary" th:text="${item.getUsuario.getUserName}:">james_olesenn</small> <small class="font-weight-bold" th:text="${item.getComentario}">Hmm, This poster looks cool</small></span>
                                         </div>
                                         <small th:text="${#dates.format(item.fecha, 'dd-MM-yyyy hh:mm a')}">2 days ago</small>
                                     </div>

@@ -7,10 +7,7 @@ import io.javalin.Javalin;
 import org.jasypt.util.text.AES256TextEncryptor;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -27,7 +24,11 @@ public class ProductoController extends BaseController {
                 before(ctx -> {
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
-                        total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
+                        List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                        if(lista != null)
+                            total = ProductoPedidoServ.getInstance()._getTotalProductosenCarrito(lista); // total en carrito
+                         else
+                             total = 0;
                         ctx.sessionAttribute("tc",total);
                         modelo.put("isLogin",1);
                         modelo.put("usuario",user.getNombre());
@@ -54,6 +55,10 @@ public class ProductoController extends BaseController {
                                 }
                             }
                         }else{*/
+                        List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                        if(lista != null)
+                            total = ProductoPedidoServ.getInstance()._getTotalProductosenCarrito(lista); // total en carrito
+                        else
                             total = 0;
                             modelo.put("isLogin",0);
                             modelo.put("rol",null);
@@ -66,6 +71,68 @@ public class ProductoController extends BaseController {
                     modelo.put("productos",productoList);
                     modelo.put("carrito",total);
                     ctx.render("publico/Templates/Productos/index.html",modelo);
+                });
+
+                // Pedidos
+                get("/mi-carrito", ctx -> {
+                    double ptotal = 0;
+                    List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                    if(lista == null){
+                        modelo.put("isEmpty",0);
+                        ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
+                    }else{
+                        for( var item : lista){
+                            ptotal += (item.getProducto().getPrecio() * item.getCantidad());
+                        }
+                        modelo.put("isEmpty",1);
+                        modelo.put("total",ptotal);
+                        modelo.put("carrito",lista);
+                        ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
+                    }
+
+                });
+                post("/index/add/{id}",ctx -> {
+                    List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+                    if(lista != null)
+                    {
+                        ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._addProducto(lista,producto,cantidad));
+                    }else{
+                        ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._addProducto(new ArrayList<>(),producto,cantidad));
+                    }
+                    ctx.redirect("/");
+                });
+                post("/view/add/{id}",ctx -> {
+                    List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+                    if(lista != null)
+                    {
+                        ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._addProducto(lista,producto,cantidad));
+                    }else{
+                        ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._addProducto(new ArrayList<>(),producto,cantidad));
+                    }
+                    ctx.redirect("/user/producto/view/"+producto.getId());
+                });
+                post("/edit/{id}",ctx -> {
+                    List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+                    if(lista != null)
+                    {
+                        ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._editarCarro(lista,producto,cantidad));
+                    }
+                    ctx.redirect("/mi-carrito");
+                });
+                get("/remove/{id}", ctx -> {
+                    List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    if(lista != null)
+                    {
+                        ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._removeProducto(lista,producto));
+                    }
+                    ctx.redirect("/mi-carrito");
                 });
 
             });
