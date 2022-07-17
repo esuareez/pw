@@ -73,6 +73,38 @@ public class ProductoController extends BaseController {
                     ctx.render("publico/Templates/Productos/index.html",modelo);
                 });
 
+                // Ver producto
+                get("/producto/view/{id}",ctx -> {
+                    Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
+                    Usuario user = ctx.sessionAttribute("usuario");
+                    if(user != null)
+                        modelo.put("usuario",user);
+                    else
+                        modelo.put("isLogin",0);
+                    List<Foto> fotos = FotoServices.getInstancia().findAll();
+                    List<Comentario> comentarios = ComentarioServ.getInstance().findAll();
+                    for(var item : fotos){
+                        if(item.getProducto().getId() == producto.getId()){
+                            Foto foto = item;
+                            System.out.println(foto.getId()+" "+foto.getProducto().getNombre());
+                            modelo.put("foto",foto);
+                            break;
+                        }
+                    }
+                    int cantidad = 0;
+                    for(var item : comentarios){
+                        if(item.getProducto().getId() == producto.getId())
+                            cantidad++;
+                    }
+                    modelo.put("producto",producto);
+                    modelo.put("fotos",fotos);
+                    modelo.put("carrito",total);
+                    modelo.put("comentarios",comentarios);
+                    modelo.put("cantidad",cantidad);
+
+                    ctx.render("publico/Templates/Productos/View.html",modelo);
+                });
+
                 // Pedidos
                 get("/mi-carrito", ctx -> {
                     double ptotal = 0;
@@ -87,6 +119,7 @@ public class ProductoController extends BaseController {
                         modelo.put("isEmpty",1);
                         modelo.put("total",ptotal);
                         modelo.put("carrito",lista);
+                        modelo.put("ptotal",total);
                         ctx.render("publico/Templates/Pedidos/Carrito.html",modelo);
                     }
 
@@ -113,7 +146,7 @@ public class ProductoController extends BaseController {
                     }else{
                         ctx.sessionAttribute("carrito",ProductoPedidoServ.getInstance()._addProducto(new ArrayList<>(),producto,cantidad));
                     }
-                    ctx.redirect("/user/producto/view/"+producto.getId());
+                    ctx.redirect("/producto/view/"+producto.getId());
                 });
                 post("/edit/{id}",ctx -> {
                     List<ProductoPedido> lista = ctx.sessionAttribute("carrito");

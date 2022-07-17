@@ -95,12 +95,12 @@ public class PedidoController extends BaseController {
                 post("/producto/comentario/{id}", ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     Usuario user = ctx.sessionAttribute("usuario");
-                    if(user == null){
+                    if(user == null || user.equals("")){
                         ctx.redirect("/login");
                     }
                     String comentario = ctx.formParam("comentario");
                     ComentarioServ.getInstance().crear(new Comentario(producto,user,comentario));
-                    ctx.redirect("/user/producto/view/"+producto.getId());
+                    ctx.redirect("/producto/view/"+producto.getId());
                 });
 
                 /*// Pedidos

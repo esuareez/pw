@@ -69,6 +69,7 @@ public class ProductoPedidoServ extends GestionDb<ProductoPedido>{
         double total = 0;
         pedido.setEstado(2);
         for( var item : lista){
+            ProductoPedidoServ.getInstance().crear(new ProductoPedido(pedido,item.getProducto(),item.getCantidad()));
             total += (item.getProducto().getPrecio() * item.getCantidad());
             item.getProducto().setCantidad((item.getProducto().getCantidad()-item.getCantidad()));
             ProductoServ.getInstance().editar(item.getProducto());
