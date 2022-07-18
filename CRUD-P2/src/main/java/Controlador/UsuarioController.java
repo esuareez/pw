@@ -41,10 +41,11 @@ public class UsuarioController extends BaseController {
                                 String data1 = textEncryptor1.encrypt(user.getPassword());
                                 ctx.cookie("USESSION",data,604800);
                                 ctx.cookie("UPSESSION",data1,604800);
+                            }else{
+                                ctx.sessionAttribute("usuario",user);
+                                ctx.cookie("USESSION","",604800);
+                                ctx.cookie("UPSESSION","",604800);
                             }
-                            ctx.sessionAttribute("usuario",user);
-                            ctx.cookie("USESSION","",604800);
-                            ctx.cookie("UPSESSION","",604800);
                             if(user.getRol().equalsIgnoreCase( "cliente"))
                             {
                                 ctx.redirect("/");

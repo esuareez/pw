@@ -17,6 +17,7 @@ public class ProductoController extends BaseController {
         super(app);
     }
     private int total;
+    private boolean desencript;
     public void aplicarRutas(){
         app.routes(() -> {
             Map<String,Object> modelo = new HashMap<>();
@@ -40,8 +41,7 @@ public class ProductoController extends BaseController {
                             }
                         }
                     }else{
-                        /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null) ||
-                                !(ctx.cookie("USESSION").equalsIgnoreCase("") && ctx.cookie("UPSESSION").equalsIgnoreCase(""))){
+                        if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null)){
                             AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
                             textEncryptor.setPassword("encpUss");
                             String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
@@ -50,20 +50,31 @@ public class ProductoController extends BaseController {
                             String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
                             Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
                             if(u != null){
-                                if(u.getPassword().equalsIgnoreCase(pass)){
+                                if(u.getPassword().equals(pass)){
                                     ctx.sessionAttribute("usuario",u);
+                                    modelo.put("isLogin",1);
+                                    modelo.put("usuario",u.getNombre());
+                                    if(u.getRol().equalsIgnoreCase("cliente")){
+                                        modelo.put("rol","cliente");
+                                        ctx.redirect("/");
+                                    }else{
+                                        if(u.getRol().equalsIgnoreCase("admin")){
+                                            modelo.put("rol","admin");
+                                            ctx.redirect("/admin/inventario");
+                                        }
+                                    }
                                 }
                             }
-                        }else{*/
+                        }else{
+                            modelo.put("isLogin",0);
+                            modelo.put("rol",null);
+                        }
                         List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
                         if(lista != null)
                             total = ProductoPedidoServ.getInstance()._getTotalProductosenCarrito(lista); // total en carrito
                         else
                             total = 0;
-                            modelo.put("isLogin",0);
-                            modelo.put("rol",null);
-                        }
-                    //}
+                    }
                 });
 
                 get("/",ctx -> {
@@ -172,21 +183,6 @@ public class ProductoController extends BaseController {
 
             path("/admin/", () -> {
                 before(ctx -> {
-                    /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null) ||
-                            (ctx.cookie("USESSION").equalsIgnoreCase("") && ctx.cookie("UPSESSION").equalsIgnoreCase(""))){
-                        AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
-                        textEncryptor.setPassword("encpUss");
-                        String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
-                        AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
-                        textEncryptor1.setPassword("encpPss");
-                        String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
-                        Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
-                        if(u != null){
-                            if(u.getPassword().equalsIgnoreCase(pass)){
-                                ctx.sessionAttribute("usuario",u);
-                            }
-                        }
-                    }*/
                     Usuario user = ctx.sessionAttribute("usuario");
                     if(user != null){
                         total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
@@ -201,9 +197,35 @@ public class ProductoController extends BaseController {
                             }
                         }
                     }else{
+                        /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null)){
+                            AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+                            textEncryptor.setPassword("encpUss");
+                            String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
+                            AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
+                            textEncryptor1.setPassword("encpPss");
+                            String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
+                            Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
+                            if(u != null){
+                                if(u.getPassword().equals(pass)){
+                                    ctx.sessionAttribute("usuario",u);
+                                    total = PedidoServ.getInstance().getTotalProductosenCarrito(u); // total en carrito
+                                    ctx.sessionAttribute("tc",total);
+                                    modelo.put("isLogin",1);
+                                    modelo.put("usuario",u.getNombre());
+                                    if(u.getRol().equalsIgnoreCase("cliente")){
+                                        ctx.redirect("/");
+                                    }else{
+                                        if(u.getRol().equalsIgnoreCase("admin")){
+                                            modelo.put("rol","admin");
+                                        }
+                                    }
+                                }
+                            }*/
+                       // }else{
                             total = 0;
                             modelo.put("isLogin",0);
                             ctx.redirect("/login");
+                        //}
                     }
 
                 });

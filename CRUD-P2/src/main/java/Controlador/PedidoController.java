@@ -21,26 +21,13 @@ public class PedidoController extends BaseController {
         super(app);
     }
     private int total;
+
     public void aplicarRutas(){
         app.routes(() -> {
             path("/user/", () -> {
                 Map<String,Object> modelo = new HashMap<>();
                 before(ctx -> {
-                    /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null) ||
-                            (ctx.cookie("USESSION").equalsIgnoreCase("") && ctx.cookie("UPSESSION").equalsIgnoreCase(""))){
-                        AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
-                        textEncryptor.setPassword("encpUss");
-                        String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
-                        AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
-                        textEncryptor1.setPassword("encpPss");
-                        String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
-                        Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
-                        if(u != null){
-                            if(u.getPassword().equalsIgnoreCase(pass)){
-                                ctx.sessionAttribute("usuario",u);
-                            }
-                        }
-                    }*/
+
                     Usuario user = ctx.sessionAttribute("usuario");
                     if (user != null) {
                         total = PedidoServ.getInstance().getTotalProductosenCarrito(user); // total en carrito
@@ -55,12 +42,38 @@ public class PedidoController extends BaseController {
                             }
                         }
                     } else {
-                        modelo.put("isLogin", 0);
-                        ctx.redirect("/login");
+                        /*if((ctx.cookie("USESSION") != null && ctx.cookie("UPSESSION") != null)){
+                            AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+                            textEncryptor.setPassword("encpUss");
+                            String name = textEncryptor.decrypt(ctx.cookie("USESSION"));
+                            AES256TextEncryptor textEncryptor1 = new AES256TextEncryptor();
+                            textEncryptor1.setPassword("encpPss");
+                            String pass = textEncryptor1.decrypt(ctx.cookie("UPSESSION"));
+                            Usuario u = UsuarioServ.getInstance().getUsuarioporUsuario(name, UsuarioServ.getInstance().findAll());
+                            if(u != null){
+                                if(u.getPassword().equals(pass)){
+                                    ctx.sessionAttribute("usuario",u);
+                                    total = PedidoServ.getInstance().getTotalProductosenCarrito(u); // total en carrito
+                                    ctx.sessionAttribute("tc", total);
+                                    modelo.put("isLogin", 1);
+                                    modelo.put("usuario", u.getNombre());
+                                    if (u.getRol().equalsIgnoreCase("cliente")) {
+                                        modelo.put("rol", "cliente");
+                                    } else {
+                                        if (u.getRol().equalsIgnoreCase("admin")) {
+                                            modelo.put("rol", "admin");
+                                        }
+                                    }
+                                }
+                            }
+                        }else{*/
+                            modelo.put("isLogin", 0);
+                            ctx.redirect("/login");
+                        //}
                     }
 
                 });
-                // Ver producto
+               /* // Ver producto
                 get("/producto/view/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     Usuario user = ctx.sessionAttribute("usuario");
@@ -90,7 +103,7 @@ public class PedidoController extends BaseController {
                     modelo.put("cantidad",cantidad);
 
                     ctx.render("publico/Templates/Productos/View.html",modelo);
-                });
+                });*/
                 // Comentar producto
                 post("/producto/comentario/{id}", ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
