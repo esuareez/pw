@@ -144,33 +144,7 @@
         <div class="page-content">
             <section class="section">
                 <div class="row">
-                    <!--<div class="col-12 col-md-6">
-                        <div class="ecommerce-gallery" data-mdb-zoom-effect="true" data-mdb-auto-height="true">
-                            <div class="row py-3 shadow-5">
-                                <div class="col-12 mb-1">
-                                    <div class="lightbox">
-                                        <img
-                                                th:src="@{'data:'+${foto.getMimeType()}+';base64,'+${foto.getFotoBase64()}}"
-                                                alt="Gallery image 1"
-                                                class="ecommerce-gallery-main-img active w-100" style="height: 400px"
-                                        />
-                                    </div>
-                                </div>
-                                <span th:each="item : ${fotos}"
-                                      th:if="${(item.getProducto.getId == producto.getId)}">
-                                    <div class="col-3 mt-1">
-                                    <img
-                                            th:src="@{'data:'+${item.getMimeType()}+';base64,'+${item.getFotoBase64()}}"
-                                            data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/14a.webp"
-                                            alt="Gallery image 1"
-                                            class="active w-100"
-                                            style="height: 200px"
-                                    />
-                                </div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>-->
+
                     <div class="col-12 col-md-6">
                         <div >
                             <img th:src="@{'data:'+${foto.getMimeType()}+';base64,'+${foto.getFotoBase64()}}"
@@ -251,15 +225,16 @@
                                         </div>
                                         <small th:text="${#dates.format(item.fecha, 'dd-MM-yyyy hh:mm a')}">2 days ago</small>
                                     </div>
-                                        <span th:if="${usuario.getRol == 'admin'}">
-                                            <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                                <div class="reply px-4">
-                                                    <a th:href="'/admin/producto/'+${producto.getId}+'/comentario/eliminar/'+${item.getId}"><small>Eliminar comentario</small></a>
-                                                    <span class="dots"></span>
+                                        <span th:if="${rol != null}">
+                                            <span th:if="${rol == 'admin'}">
+                                                <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                    <div class="reply px-4">
+                                                        <a th:href="'/admin/producto/'+${producto.getId}+'/comentario/eliminar/'+${item.getId}"><small>Eliminar comentario</small></a>
+                                                        <span class="dots"></span>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                </span>
                                         </span>
-
                                 </div>
                                 </span>
                                 </div>

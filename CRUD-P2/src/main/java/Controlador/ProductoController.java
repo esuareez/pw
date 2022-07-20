@@ -17,7 +17,7 @@ public class ProductoController extends BaseController {
         super(app);
     }
     private int total;
-    private boolean desencript;
+
     public void aplicarRutas(){
         app.routes(() -> {
             Map<String,Object> modelo = new HashMap<>();
@@ -66,11 +66,11 @@ public class ProductoController extends BaseController {
                                 }
                             }else{
                                 modelo.put("isLogin",0);
-                                modelo.put("rol",null);
+                                modelo.put("rol",null); // cambiar a cliente
                             }
                         }else{
                             modelo.put("isLogin",0);
-                            modelo.put("rol",null);
+                            modelo.put("rol",null); //
                         }
                         List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
                         if(lista != null)
@@ -91,10 +91,13 @@ public class ProductoController extends BaseController {
                 get("/producto/view/{id}",ctx -> {
                     Producto producto = ProductoServ.getInstance().find(ctx.pathParamAsClass("id",Integer.class).get());
                     Usuario user = ctx.sessionAttribute("usuario");
-                    if(user != null)
+                    if(user != null){
                         modelo.put("usuario",user);
-                    else
+
+                    }
+                    else{
                         modelo.put("isLogin",0);
+                    }
                     List<Foto> fotos = FotoServices.getInstancia().findAll();
                     List<Comentario> comentarios = ComentarioServ.getInstance().findAll();
                     for(var item : fotos){
@@ -236,6 +239,7 @@ public class ProductoController extends BaseController {
                             try {
                                 byte[] bytes = uploadedFile.getContent().readAllBytes();
                                 String encodedString = Base64.getEncoder().encodeToString(bytes);
+                                System.out.println("CODIGO: "+encodedString);
                                 Foto foto = new Foto(p,uploadedFile.getFilename(), uploadedFile.getContentType(), encodedString);
                                 FotoServices.getInstancia().crear(foto);
                             } catch (IOException e) {
