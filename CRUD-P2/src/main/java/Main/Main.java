@@ -52,12 +52,19 @@ public class Main {
             //config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
             config.enableCorsForAllOrigins();
         });
-        app.start(7000);
+        app.start(getHerokuAssignedPort());
 
         new ProductoController(app).aplicarRutas();
         new UsuarioController(app).aplicarRutas();
         new PedidoController(app).aplicarRutas();
 
+    }
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 7000; //Retorna el puerto por defecto en caso de no estar en Heroku.
     }
 
 }

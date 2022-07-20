@@ -20,4 +20,25 @@
     </properties>
     </persistence-unit>
 
+    <persistence-unit name="Heroku" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>Modelos.Usuario</class>
+        <class>Modelos.Producto</class>
+        <class>Modelos.Pedido</class>
+        <class>Modelos.ProductoPedido</class>
+        <class>Modelos.Foto</class>
+        <class>Modelos.Comentario</class>
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.show_sql" value="true"/>
+            <!-- Indica como será la generación de las tablas en el motor-->
+            <!-- ver la documentación: https://docs.oracle.com/javaee/7/tutorial/persistence-intro005.htm -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+            <!--<property name="eclipselink.logging.level" value="ALL" />-->
+        </properties>
+    </persistence-unit>
+
 </persistence>

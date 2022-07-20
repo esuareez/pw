@@ -43,3 +43,13 @@ application{
 test {
     useJUnitPlatform()
 }
+
+shadowJar{
+    baseName = 'app'
+    classifier = ''
+    archiveVersion = ''
+}
+
+task stage {
+    dependsOn shadowJar
+}
