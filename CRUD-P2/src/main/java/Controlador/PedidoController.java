@@ -63,7 +63,8 @@ public class PedidoController extends BaseController {
                     List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
                     Usuario user = ctx.sessionAttribute("usuario");
                     ProductoPedidoServ.getInstance()._completarPedido(lista,user);
-                    ctx.sessionAttribute("carrito",null);
+                    lista = null;
+                    ctx.sessionAttribute("carrito",lista);
                     ctx.redirect("/mi-carrito");
                 });
 

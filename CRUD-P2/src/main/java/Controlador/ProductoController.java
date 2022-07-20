@@ -66,11 +66,11 @@ public class ProductoController extends BaseController {
                                 }
                             }else{
                                 modelo.put("isLogin",0);
-                                modelo.put("rol",null); // cambiar a cliente
+                                modelo.put("rol",null);
                             }
                         }else{
                             modelo.put("isLogin",0);
-                            modelo.put("rol",null); //
+                            modelo.put("rol",null);
                         }
                         List<ProductoPedido> lista = ctx.sessionAttribute("carrito");
                         if(lista != null)
@@ -248,7 +248,7 @@ public class ProductoController extends BaseController {
                         });
                         ctx.redirect("/admin/inventario");
                     }
-                    //ProductoServ.getInstance().crearProducto(producto);
+
 
                 });
                 get("/inventario",ctx -> {
