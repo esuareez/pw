@@ -70,7 +70,7 @@
 
                     <li class="sidebar-title">Menu</li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item">
                         <a th:href="@{/}" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Inicio</span>
@@ -78,7 +78,7 @@
                     </li>
 
                     <li class="sidebar-item ">
-                        <a th:href="@{/user/mi-carrito}" class='sidebar-link'>
+                        <a th:href="@{/mi-carrito}" class='sidebar-link'>
                             <i class="bi bi-cart4"></i>
                             <span>Carrito <span th:text="${carrito}" class="badge bg-dark text-white ms-1 rounded-pill"></span> </span>
                         </a>
@@ -86,7 +86,7 @@
                     <span th:switch="${rol}">
                         <span th:case="admin">
                             <li class="sidebar-title">Administrador</li>
-                            <li class="sidebar-item  has-sub">
+                            <li class="sidebar-item  has-sub active">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-box-seam"></i>
                                 <span>Producto</span>
@@ -146,7 +146,7 @@
                                     <div class="card-header">
                                         <h4 class="card-title">Datos del producto</h4>
                                     </div>
-                                    <form class="form form-center" method="POST" action="/admin/editarProducto">
+                                    <form class="form form-center" method="POST" action="/admin/editarProducto" enctype="multipart/form-data">
                                         <div class="card-body">
                                             <div class="form-body ">
                                                 <div class="row ">
@@ -197,11 +197,59 @@
 
                                                     <div class="form-group mb-3">
                                                         <label for="exampleFormControlTextarea1"
-                                                               class="form-label">Descripción del producto</label>
+                                                               class="form-label">Descripcion del producto</label>
                                                         <textarea required class="form-control"
                                                                   id="exampleFormControlTextarea1" rows="3"
                                                                   name="descripcion" th:value="${producto} ? ${producto.descripcion} : ''" th:text="${producto} ? ${producto.descripcion} : ''"></textarea>
                                                     </div>
+
+                                                    <div class="col-12 col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title">Imagenes</h5>
+                                                            </div>
+                                                            <div class="card-content">
+                                                                <div class="card-body">
+                                                                    <p class="card-text">Sube la(s) imagene(s) de tu producto.
+                                                                    </p>
+                                                                    <!-- File uploader with image preview -->
+                                                                    <span th:if="${img == 1}">
+                                                                         <input type="file" name="foto">
+                                                                    </span>
+                                                                    <span th:if="${img == 0}">
+                                                                        <input type="file" name="foto" multiple required>
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <table class="table table-striped" id="table1">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Nombre</th>
+                                                            <th>Tipo</th>
+                                                            <th> </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        <tr th:each="foto : ${fotos}"
+                                                            th:if="${foto.getProducto.getId == producto.id}">
+                                                            <th> <img th:src="@{'data:'+${foto.getMimeType()}+';base64,'+${foto.getFotoBase64()}}" height="60px"></th>
+                                                            <td th:text="${foto.nombre}">Nombre Foto</td>
+                                                            <td th:text="${foto.mimeType}">PNG</td>
+                                                            <td>
+                                                                <!--<a th:text="Visualizar" th:href="'visualizar/'+${foto.id}" th class="btn btn-secondary btn-sm"/> |-->
+                                                                <a  th:href="'/admin/producto/eliminar/'+${producto.id}+'/imagen/'+${foto.id}" th class="btn btn-danger btn-sm"/><i class="fa-solid fa-xmark"></i>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+
 
                                                     <div class="col-sm-12 d-flex justify-content-end">
                                                         <button type="submit"

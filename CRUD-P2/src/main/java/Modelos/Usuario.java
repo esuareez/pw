@@ -5,30 +5,40 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name="miusuario")
-public class Usuario {
+public class Usuario{
     @Id
     @GeneratedValue
     private int id;
-    private String user;
+    private String userName;
     private String nombre;
     private String password;
     private String rol;
 
     public Usuario() {
     }
-
-    public Usuario(String user, String nombre, String password, String rol) {
-        this.user = user;
+    public Usuario(String userName, String nombre, String password) {
+        this.userName = userName;
+        this.nombre = nombre;
+        this.password = password;
+    }
+    public Usuario(String userName,  String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+    public Usuario(String userName, String nombre, String password, String rol) {
+        this.userName = userName;
         this.nombre = nombre;
         this.password = password;
         this.rol = rol;
     }
 
-    public Usuario(int id, String user, String nombre, String password, String rol) {
+    public Usuario(int id, String userName, String nombre, String password, String rol) {
         this.id = id;
-        this.user = user;
+        this.userName = userName;
         this.nombre = nombre;
         this.password = password;
         this.rol = rol;
@@ -42,12 +52,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String user) {
+        this.userName = user;
     }
 
     public String getPassword() {
